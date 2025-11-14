@@ -1,6 +1,6 @@
 const permissionsList = [
   "USER_CREATE",
-  "ROLE_CREATE",
+  "USER_VIEW",
 ];
 
 export default permissionsList;

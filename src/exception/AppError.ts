@@ -23,6 +23,12 @@ export class UnauthorizedError extends AppError {
     }
 }
 
+export class ForbiddenError extends AppError {
+    constructor(message: string = 'Forbidden') {
+        super(message, 403);
+    }
+}
+
 export class ValidationError extends AppError {
     public details?: any;
     constructor(message: string = 'Validation failed', details?: any) {
