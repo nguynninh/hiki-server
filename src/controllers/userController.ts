@@ -1,6 +1,7 @@
 import { UserModel } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from '../utils/responseFormatter';
 import { NotFoundError, ValidationError } from "../exception/AppError";
@@ -21,7 +22,7 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
 
     user = await UserModel.create({
         email,
-        password,
+        password: await bcrypt.hash(password, Number(process.env.BCRYPT_SALT_ROUNDS) || 10),
         firstname,
         lastname,
     });

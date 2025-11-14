@@ -22,6 +22,16 @@ export async function initSuperAdmin() {
       permissionRecords.push(perm);
     }
 
+    await PermissionModel.destroy({
+      where: {
+        name: {
+          [require('sequelize').Op.notIn]: permissionsList,
+        },
+      },
+    });
+
+    console.log(`Synced ${permissionRecords.length} permissions, removed obsolete ones.`);
+
     await (superAdminRole as any).setPermissions(permissionRecords);
 
     const email = process.env.ADMIN_EMAIL!;

@@ -1,4 +1,4 @@
-import { RoleModel } from "../models";
+import { PermissionModel, RoleModel } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -35,6 +35,18 @@ const createRole = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getAllPermissions = asyncHandler(async (req: Request, res: Response) => {
+    const permissions = await PermissionModel.findAll();
+
+    return successResponse(res, {
+        message: req.t('role:permissions_fetched'),
+        data: {
+            permissions,
+        }
+    });
+});
+
 export {
     createRole,
+    getAllPermissions,
 };
