@@ -40,6 +40,25 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getUser = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const user = await UserModel.findByPk(id);
+    if (!user)
+        throw new NotFoundError(req.t('user:user_not_found'));
+
+    return successResponse(res, {
+        message: req.t('user:user_getted'),
+        data: {
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            }
+        }
+    });
+});
+
 export {
     createUser,
+    getUser,
 };

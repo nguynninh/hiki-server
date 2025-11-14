@@ -1,4 +1,6 @@
 {
+    "id_required": "ID is required.",
+    "id_invalid": "ID is invalid.",
     "email_required": "Email is required.",
     "email_invalid": "Email is invalid.",
     "password_required": "Password is required.",
@@ -8,5 +10,6 @@
     "last_name_required": "Last name is required.",
     "last_name_max_length": "Last name must not exceed {max} characters.",
     "user_created": "User has been created successfully.",
+    "user_getted": "User has been retrieved successfully.",
     "email_exists": "Email already exists."
 }

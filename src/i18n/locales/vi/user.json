@@ -1,4 +1,6 @@
 {
+    "id_required": "ID là bắt buộc.",
+    "id_invalid": "ID không hợp lệ.",
     "email_required": "Email là bắt buộc.",
     "email_invalid": "Email không hợp lệ.",
     "password_required": "Mật khẩu là bắt buộc.",
@@ -8,5 +10,6 @@
     "last_name_required": "Họ là bắt buộc.",
     "last_name_max_length": "Họ không được vượt quá {max} ký tự.",
     "user_created": "Người dùng đã được tạo thành công.",
+    "user_getted": "Người dùng đã được lấy thành công.",
     "email_exists": "Email đã tồn tại."
 }
