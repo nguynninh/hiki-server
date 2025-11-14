@@ -1,0 +1,7 @@
+{
+    "name_required": "Tên vai trò là bắt buộc.",
+    "name_max_length": "Tên vai trò không được vượt quá {max} ký tự.",
+    "description_max_length": "Mô tả vai trò không được vượt quá {max} ký tự.",
+    "role_created": "Vai trò đã được tạo thành công.",
+    "role_exists": "Vai trò đã tồn tại."
+}
