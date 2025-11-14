@@ -3,5 +3,6 @@
     "name_max_length": "角色名称不得超过 {max} 个字符。",
     "description_max_length": "角色描述不得超过 {max} 个字符。",
     "role_created": "角色创建成功。",
+    "permissions_fetched": "权限获取成功。",
     "role_exists": "角色已存在。"
 }

@@ -3,5 +3,6 @@
     "name_max_length": "Tên vai trò không được vượt quá {max} ký tự.",
     "description_max_length": "Mô tả vai trò không được vượt quá {max} ký tự.",
     "role_created": "Vai trò đã được tạo thành công.",
+    "permissions_fetched": "Lấy tất cả quyền thành công.",
     "role_exists": "Vai trò đã tồn tại."
 }

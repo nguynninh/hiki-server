@@ -10,6 +10,7 @@ app.use(cors());
 app.use(i18nMiddleware);
 
 const baseUrl = appConfig.apiBasePath || '';
+app.use(`${baseUrl}/auth`, require('./routers/authRouter').default);
 app.use(`${baseUrl}/users`, require('./routers/userRouter').default);
 app.use(`${baseUrl}/roles`, require('./routers/roleRouter').default);
 
