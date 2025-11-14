@@ -1,0 +1,7 @@
+{
+    "name_required": "役割名は必須です。",
+    "name_max_length": "役割名は{max}文字を超えてはいけません。",
+    "description_max_length": "役割の説明は{max}文字を超えてはいけません。",
+    "role_created": "役割が正常に作成されました。",
+    "role_exists": "役割は既に存在します。"
+}

@@ -1,0 +1,7 @@
+{
+    "name_required": "Role name is required.",
+    "name_max_length": "Role name must not exceed {max} characters.",
+    "description_max_length": "Role description must not exceed {max} characters.",
+    "role_created": "Role has been created successfully.",
+    "role_exists": "Role already exists."
+}
