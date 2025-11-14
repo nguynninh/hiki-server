@@ -9,19 +9,14 @@
       "./node_modules/@types",
       "./src/types"
     ],
-    "types": [
-      "node"
-    ],
     "lib": [
       "esnext"
     ],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "strict": true,
@@ -31,5 +26,11 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "ts-node": {
+    "files": true
   }
 }
