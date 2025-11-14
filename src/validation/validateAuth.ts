@@ -17,7 +17,7 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction) =
       .required()
       .messages({
         'string.empty': req.t('auth:password_required'),
-        'string.min': req.t('auth:password_min_length', { min: 6 }),
+        'string.min': req.t('auth:password_min_length', { min: 8 }),
         'any.required': req.t('auth:password_required'),
       }),
   });
