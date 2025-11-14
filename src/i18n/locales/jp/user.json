@@ -1,4 +1,6 @@
 {
+    "id_required": "IDは必須です。",
+    "id_invalid": "IDが無効です。",
     "email_required": "メールアドレスは必須です。",
     "email_invalid": "無効なメールアドレスです。",
     "password_required": "パスワードは必須です。",
@@ -8,5 +10,6 @@
     "last_name_required": "姓は必須です。",
     "last_name_max_length": "姓は最大{max}文字までです。",
     "user_created": "ユーザーが正常に作成されました。",
+    "user_getted": "ユーザーが正常に取得されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }
