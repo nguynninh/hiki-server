@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import appConfig from './configuration/appConfig';
 import i18nMiddleware from './i18n/index';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 
@@ -9,9 +10,11 @@ app.use(express.json());
 app.use(cors());
 app.use(i18nMiddleware);
 
-const base = appConfig.apiBasePath || '';
+const baseUrl = appConfig.apiBasePath || '';
 
-app.get(`${base}/healthy`, (req: Request, res: Response) => {
+app.use(`${baseUrl}/users`, require('./routers/userRouter').default);
+
+app.get(`${baseUrl}/healthy`, (req: Request, res: Response) => {
 	res.status(200).json({
 		code: 200,
         message: req.t('common:success'),
@@ -24,5 +27,7 @@ app.use((req: Request, res: Response) => {
         message: req.t('common:error'),
 	});
 });
+
+app.use(errorHandler);
 
 export default app;
