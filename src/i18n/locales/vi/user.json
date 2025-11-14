@@ -1,0 +1,12 @@
+{
+    "email_required": "Email là bắt buộc.",
+    "email_invalid": "Email không hợp lệ.",
+    "password_required": "Mật khẩu là bắt buộc.",
+    "password_min_length": "Mật khẩu phải có ít nhất {min} ký tự.",
+    "first_name_required": "Tên là bắt buộc.",
+    "first_name_max_length": "Tên không được vượt quá {max} ký tự.",
+    "last_name_required": "Họ là bắt buộc.",
+    "last_name_max_length": "Họ không được vượt quá {max} ký tự.",
+    "user_created": "Người dùng đã được tạo thành công.",
+    "email_exists": "Email đã tồn tại."
+}

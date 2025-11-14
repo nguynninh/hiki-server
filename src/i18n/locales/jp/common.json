@@ -1,4 +1,5 @@
 {
+    "validation_error": "検証エラー",
     "success": "成功",
     "error": "エラー"
 }
