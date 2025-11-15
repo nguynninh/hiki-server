@@ -22,5 +22,6 @@
     "code_length": "代码必须为{length}个字符。",
     "user_retrieved": "用户获取成功。",
     "user_not_found": "未找到用户。",
+    "users_listed": "用户列表已成功获取。",
     "email_exists": "电子邮件已存在。"
 }

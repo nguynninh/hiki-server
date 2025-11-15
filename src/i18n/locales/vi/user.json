@@ -22,5 +22,6 @@
     "code_length": "Mã phải có {length} ký tự.",
     "user_retrieved": "Người dùng đã được lấy thành công.",
     "user_not_found": "Không tìm thấy người dùng.",
+    "users_listed": "Danh sách người dùng đã được lấy thành công.",
     "email_exists": "Email đã tồn tại."
 }
