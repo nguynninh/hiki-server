@@ -2,20 +2,21 @@ import bcrypt from "bcrypt";
 import { UserModel, RoleModel, PermissionModel } from "../models";
 import sequelize from "../database/pgClient";
 import permissionsList from "../constants/appPermissions";
+import roles from "../constants/appRoles";
 
 export async function initSuperAdmin() {
   try {
     await sequelize.sync();
 
     const [superAdminRole] = await RoleModel.findOrCreate({
-      where: { name: "SUPER_ADMIN" },
+      where: { name: roles.SUPER_ADMIN },
       defaults: {
         description: "Full system access",
       },
     });
 
     await RoleModel.findOrCreate({
-      where: { name: "USER" },
+      where: { name: roles.USER },
       defaults: {
         description: "Regular user role",
       },

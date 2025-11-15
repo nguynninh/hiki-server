@@ -22,5 +22,6 @@
     "code_length": "Code must be {length} characters.",
     "user_retrieved": "User retrieved successfully.",
     "user_not_found": "User not found.",
+    "users_listed": "User list has been retrieved successfully.",
     "email_exists": "Email already exists."
 }

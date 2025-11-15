@@ -22,5 +22,6 @@
     "code_length": "コードは{length}文字である必要があります。",
     "user_retrieved": "ユーザーが正常に取得されました。",
     "user_not_found": "ユーザーが見つかりません。",
+    "users_listed": "ユーザーリストが正常に取得されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
     changePassword,
     createUser,
+    getListUsers,
     getMe,
     getUser,
     verifyUser,
@@ -33,6 +34,13 @@ router.get(
     '/me',
     authenticate,
     getMe,
+);
+
+router.get(
+    '/',
+    authenticate,
+    authorize('USER_LIST'),
+    getListUsers,
 );
 
 router.get(

@@ -12,6 +12,7 @@ import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
+import roles from "../constants/appRoles";
 
 dotenv.config();
 
@@ -65,7 +66,7 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
         lastname,
     });
 
-    const userRole = await RoleModel.findOne({ where: { name: 'USER' } });
+    const userRole = await RoleModel.findOne({ where: { name: roles.USER } });
     if (userRole) {
         await (user as any).addRole(userRole);
     }
@@ -198,6 +199,65 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getListUsers = asyncHandler(async (req: Request, res: Response) => {
+    const {
+        page,
+        limit,
+        is_deleted,
+    } = req.query;
+    
+    const whereClause: any = {};
+    if (is_deleted !== undefined) {
+        whereClause.is_deleted = is_deleted === 'true';
+    }
+
+    const pageNumber = parseInt(page as string, 10) || 1;
+    const limitNumber = parseInt(limit as string, 10) || 10;
+    const offset = (pageNumber - 1) * limitNumber;
+
+    const { rows: users, count: total } = await UserModel.findAndCountAll({
+        where: whereClause,
+        limit: limitNumber,
+        offset,
+        order: [['created_at', 'DESC']],
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+            where: {
+                name: {
+                    [require('sequelize').Op.ne]: roles.SUPER_ADMIN
+                }
+            },
+            required: false
+        }]
+    });
+
+    const filteredUsers = users.filter(user => {
+        const userRoles = (user as any).roles || [];
+        return !userRoles.some((role: any) => role.name === roles.SUPER_ADMIN);
+    });
+
+    const filteredTotal = total - (users.length - filteredUsers.length);
+
+    return successResponse(res, {
+        message: req.t('user:users_listed'),
+        data: {
+            users: filteredUsers.map(user => ({
+                ...user.toJSON(),
+                password: undefined,
+            })),
+            pagination: {
+                total: filteredTotal,
+                page: pageNumber,
+                limit: limitNumber,
+                totalPages: Math.ceil(filteredTotal / limitNumber),
+            }
+        }
+    });
+});
+
 const changePassword = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?.sub;
 
@@ -230,5 +290,6 @@ export {
     createUser,
     getUser,
     changePassword,
+    getListUsers,
     getMe,
 };
