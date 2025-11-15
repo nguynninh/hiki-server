@@ -29,6 +29,12 @@ export class ForbiddenError extends AppError {
     }
 }
 
+export class BadRequestError extends AppError {
+    constructor(message: string = 'Bad request') {
+        super(message, 400);
+    }
+}
+
 export class ValidationError extends AppError {
     public details?: any;
     constructor(message: string = 'Validation failed', details?: any) {

@@ -122,3 +122,44 @@ export const validateForgotPassword = (req: Request, res: Response, next: NextFu
 
     next();
 };
+
+export const validateResetPassword = (req: Request, res: Response, next: NextFunction) => {
+    const resetPasswordSchema = Joi.object({
+        email: Joi.string()
+            .email({ tlds: { allow: false } })
+            .required()
+            .messages({
+                'string.empty': req.t('auth:email_required'),
+                'string.email': req.t('auth:email_invalid'),
+                'any.required': req.t('auth:email_required'),
+            }),
+        otp: Joi.string()
+            .length(6)
+            .required()
+            .messages({
+                'string.empty': req.t('auth:otp_required'),
+                'string.length': req.t('auth:otp_length', { length: 6 }),
+                'any.required': req.t('auth:otp_required'),
+            }),
+        password: Joi.string()
+            .min(8)
+            .required()
+            .messages({
+                'string.empty': req.t('auth:password_required'),
+                'string.min': req.t('auth:password_min_length', { min: 8 }),
+                'any.required': req.t('auth:password_required'),
+            }),
+    });
+
+    const { error } = resetPasswordSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
