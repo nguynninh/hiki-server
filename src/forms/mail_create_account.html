@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <title>Chào mừng đến với Hiki</title>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap");
+      
+      body {
+        width: 100% !important;
+        height: 100%;
+        margin: 0;
+        -webkit-text-size-adjust: none;
+        background-color: #F2F4F6;
+        font-family: "Nunito Sans", Helvetica, Arial, sans-serif;
+        color: #51545E;
+      }
+
+      h1 { 
+        margin-top: 0; 
+        color: #333333; 
+        font-size: 24px; 
+        font-weight: bold;
+        text-align: center;
+      }
+      
+      h2 { 
+        margin: 0; 
+        color: #3869D4; 
+        font-size: 36px; 
+        font-weight: bold; 
+        text-align: center;
+        letter-spacing: 4px;
+      }
+      
+      p { 
+        margin: 0.4em 0 1.1875em; 
+        font-size: 16px; 
+        line-height: 1.625;
+        color: #51545E;
+      }
+
+      .welcome-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .welcome-banner h1 {
+        color: #FFFFFF;
+        font-size: 28px;
+        margin: 0;
+      }
+
+      .email-wrapper { width: 100%; padding: 0; background-color: #F2F4F6; }
+      .email-content { width: 100%; padding: 0; }
+      .email-body { width: 100%; padding: 0; }
+      
+      .email-body_inner { 
+        width: 570px; 
+        margin: 0 auto; 
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      
+      .content-cell { padding: 45px; }
+
+      .info-box {
+        background-color: #F8F9FA;
+        border-left: 4px solid #3869D4;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 4px;
+      }
+
+      .info-box p {
+        margin: 8px 0;
+        font-size: 15px;
+      }
+
+      .info-box strong {
+        color: #333333;
+        font-weight: 700;
+      }
+
+      .verification-code {
+        background-color: #F8F9FA;
+        border: 2px dashed #3869D4;
+        padding: 25px;
+        margin: 30px 0;
+        text-align: center;
+        border-radius: 8px;
+      }
+
+      .code-label {
+        font-size: 14px;
+        color: #6B7280;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 14px 40px;
+        background-color: #3869D4;
+        color: #FFFFFF;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 16px;
+        margin: 20px 0;
+      }
+
+      .divider {
+        border-top: 1px solid #E8E8E8;
+        margin: 30px 0;
+      }
+
+      .footer-text {
+        font-size: 14px;
+        color: #6B7280;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .social-links {
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .social-links a {
+        display: inline-block;
+        margin: 0 10px;
+        color: #3869D4;
+        text-decoration: none;
+      }
+
+      a { color: #3869D4; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      .highlight {
+        background-color: #FEF3C7;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-weight: 600;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .email-body_inner, .email-footer { width: 100% !important; }
+        h1 { font-size: 24px !important; }
+        h2 { font-size: 28px !important; }
+        .content-cell { padding: 30px !important; }
+        .welcome-banner { padding: 20px !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td align="center">
+          <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+              <td class="email-body" width="570" cellpadding="0" cellspacing="0">
+                <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="welcome-banner">
+                      <h1>🎉 Chào mừng đến với Hiki!</h1>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="content-cell">
+                      <div class="f-fallback">
+                        <p style="font-size: 18px; margin-bottom: 20px;">Xin chào <strong>{{name}}</strong>,</p>
+                        
+                        <p>Cảm ơn bạn đã đăng ký tài khoản <strong>Hiki</strong>! Chúng tôi rất vui mừng được chào đón bạn tham gia cộng đồng của chúng tôi.</p>
+
+                        <p>Để hoàn tất quá trình đăng ký và kích hoạt tài khoản của bạn, vui lòng sử dụng mã xác minh bên dưới:</p>
+
+                        <div class="verification-code">
+                          <div class="code-label">Mã xác minh của bạn</div>
+                          <h2>{{verification_code}}</h2>
+                          <p style="font-size: 14px; color: #6B7280; margin-top: 15px;">
+                            Mã này sẽ hết hạn sau <span class="highlight">{{expiry_time}} phút</span>
+                          </p>
+                        </div>
+                        <p style="font-size: 14px; color: #51545E;">
+                          <strong>Lưu ý bảo mật:</strong> Yêu cầu này được gửi từ thiết bị <strong>{{operating_system}}</strong> sử dụng trình duyệt <strong>{{browser_name}}</strong>. Nếu bạn không thực hiện đăng ký này, vui lòng <a href="mailto:support@hiki.com">liên hệ với chúng tôi ngay</a>.
+                        </p>
+
+                        <div class="divider"></div>
+
+                        <p style="margin-top: 30px;">Nếu bạn cần hỗ trợ, đừng ngần ngại <a href="mailto:support@hiki.com">liên hệ với chúng tôi</a>. Chúng tôi luôn sẵn sàng giúp đỡ!</p>
+                        
+                        <p style="margin-top: 30px;">Trân trọng,<br><strong>Đội ngũ Hiki</strong></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="content-cell" align="center">
+                      <div class="social-links">
+                        <a href="#">Facebook</a> • 
+                        <a href="#">Twitter</a> • 
+                        <a href="#">LinkedIn</a>
+                      </div>
+                      <p class="footer-text">
+                        Công ty Hiki Inc.<br>
+                        123 Nguyễn Trãi, Thanh Xuân<br>
+                        Hà Nội, Việt Nam
+                      </p>
+                      <p class="footer-text" style="margin-top: 15px;">
+                        © 2025 Hiki. All rights reserved.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

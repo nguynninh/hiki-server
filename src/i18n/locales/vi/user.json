@@ -11,5 +11,14 @@
     "last_name_max_length": "Họ không được vượt quá {max} ký tự.",
     "user_created": "Người dùng đã được tạo thành công.",
     "user_getted": "Người dùng đã được lấy thành công.",
+    "email_already_in_use": "Email đã được sử dụng.",
+    "verification_code_subject": "Mã xác minh tài khoản của bạn",
+    "verification_code_sent": "Mã xác minh đã được gửi.",
+    "too_many_requests": "Quá nhiều yêu cầu. Vui lòng thử lại sau.",
+    "otp_expired_or_invalid": "Mã OTP đã hết hạn hoặc không hợp lệ.",
+    "too_many_attempts": "Nhập sai {max} lần. Email tạm khóa {window} phút.",
+    "otp_invalid": "Mã OTP không đúng. Vui lòng thử lại.",
+    "code_required": "Mã là bắt buộc.",
+    "code_length": "Mã phải có {length} ký tự.",
     "email_exists": "Email đã tồn tại."
 }
