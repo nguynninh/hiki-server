@@ -8,6 +8,7 @@ import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from "../utils/responseFormatter";
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
+import { sendMail } from "../services/mailService";
 
 dotenv.config();
 
@@ -173,6 +174,12 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
         WINDOW_SECONDS,
         hashedOTP
     );
+
+    await sendMail({
+        to: email,
+        subject: req.t('auth:reset_password_email_subject'),
+        text: req.t('auth:reset_password_email_text', { otp, minutes: WINDOW_SECONDS / 60 }),
+    });
 
     return successResponse(res, {
         code: 200,
