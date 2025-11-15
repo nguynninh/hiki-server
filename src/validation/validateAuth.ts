@@ -97,3 +97,28 @@ export const validateLoginSocial = (req: Request, res: Response, next: NextFunct
 
   next();
 };
+
+export const validateForgotPassword = (req: Request, res: Response, next: NextFunction) => {
+    const forgotPasswordSchema = Joi.object({
+        email: Joi.string()
+            .email({ tlds: { allow: false } })
+            .required()
+            .messages({
+                'string.empty': req.t('auth:email_required'),
+                'string.email': req.t('auth:email_invalid'),
+                'any.required': req.t('auth:email_required'),
+            }),
+    });
+
+    const { error } = forgotPasswordSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
