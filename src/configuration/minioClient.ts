@@ -1,4 +1,4 @@
-import Minio from "minio";
+import * as Minio from "minio";
 
 export const AWS_ENDPOINT = process.env.AWS_ENDPOINT || "http://localhost:9000";
 const url = new URL(AWS_ENDPOINT);

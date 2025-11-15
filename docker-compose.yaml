@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
     postgres:
-        container_name: se-postgres
+        container_name: hiki-postgres
         image: postgres:16-alpine
         ports: ["5432:5432"]
         environment:
@@ -18,7 +18,7 @@ services:
             retries: 5
 
     redis:
-        container_name: se-redis
+        container_name: hiki-redis
         image: redis:7.0-alpine
         ports: ["6379:6379"]
         volumes:
@@ -32,7 +32,7 @@ services:
             retries: 5
     
     minio:
-        container_name: se-minio
+        container_name: hiki-minio
         image: minio/minio:latest
         ports:
             - '9000:9000'
@@ -52,3 +52,4 @@ services:
 volumes:
     postgres-data:
     redis-data:
+    minio-data:

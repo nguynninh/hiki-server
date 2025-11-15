@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import minioClient, { AWS_REGION, BUCKET_NAME, FORDER_BUCKET, AWS_ENDPOINT } from "../configuration/minioClient";
 import { FileMgmtModel } from "../models";
 
@@ -16,7 +16,7 @@ export async function uploadImage(
 ): Promise<any> {
   await ensureBucketExists();
 
-  const fileName = uuid.v4();
+  const fileName = uuidv4();
   const objectPath = `${FORDER_BUCKET.images}/${fileName}`;
 
   await minioClient.putObject(
@@ -32,7 +32,7 @@ export async function uploadImage(
     .digest("hex");
 
   const fileRecord = await FileMgmtModel.create({
-    objectPath,
+    path: objectPath,
     content_type: file.mimetype,
     size: file.size,
     md5_checksum: md5Hash,

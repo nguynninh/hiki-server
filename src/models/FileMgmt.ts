@@ -1,4 +1,4 @@
-import sequelize from '../database/pgClient.js';
+import sequelize from '../database/pgClient';
 import { DataTypes } from 'sequelize';
 
 const FileMgmtModel = sequelize.define('files', {
@@ -13,7 +13,6 @@ const FileMgmtModel = sequelize.define('files', {
     },
     url: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
     content_type: {
         type: DataTypes.STRING,
