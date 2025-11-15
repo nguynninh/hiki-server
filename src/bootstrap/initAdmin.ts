@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { UserModel, RoleModel, PermissionModel } from "../models";
 import sequelize from "../database/pgClient";
-import permissionsList from "../configuration/appPermissions";
+import permissionsList from "../constants/appPermissions";
 
 export async function initSuperAdmin() {
   try {
