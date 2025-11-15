@@ -1,6 +1,7 @@
 import UserModel from './UserModel';
 import RoleModel from './RoleModel';
 import PermissionModel from './PermissionModel';
+import FileMgmtModel from './FileMgmt';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -30,8 +31,24 @@ PermissionModel.belongsToMany(RoleModel, {
     as: 'roles',
 });
 
+FileMgmtModel.belongsTo(UserModel, {
+    foreignKey: 'uploaded_by',
+    as: 'uploader',
+});
+
+UserModel.hasMany(FileMgmtModel, {
+    foreignKey: 'uploaded_by',
+    as: 'uploadedFiles',
+});
+
+UserModel.belongsTo(FileMgmtModel, {
+    foreignKey: 'avatar',
+    as: 'avatarFile',
+});
+
 export {
     UserModel,
     RoleModel,
     PermissionModel,
+    FileMgmtModel,
 };

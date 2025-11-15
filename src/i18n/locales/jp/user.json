@@ -23,5 +23,9 @@
     "user_retrieved": "ユーザーが正常に取得されました。",
     "user_not_found": "ユーザーが見つかりません。",
     "users_listed": "ユーザーリストが正常に取得されました。",
+    "avatar_required": "アバターは必須です。",
+    "avatar_invalid_type": "無効なアバターのファイルタイプです。",
+    "avatar_too_large": "アバターファイルのサイズが{size}を超えています。",
+    "avatar_uploaded": "アバターが正常にアップロードされました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

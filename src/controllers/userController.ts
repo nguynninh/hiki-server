@@ -10,6 +10,7 @@ import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
+import { deleteFile, uploadImage } from "../services/fileService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
@@ -285,11 +286,46 @@ const changePassword = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const avatar = req.file;
+
+    if (!avatar) {
+        throw new ValidationError(req.t('user:avatar_required'));
+    }
+
+    const user: any = await UserModel.findByPk(userId);
+
+    if (!user) {
+        throw new NotFoundError(req.t('auth:user_not_found'));
+    }
+
+    const { fileRecord, publicUrl } = await uploadImage(userId, avatar);
+
+    if (user.avatar)
+        await deleteFile(user.avatar);
+
+    await user.update({ avatar: fileRecord.id });
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:avatar_uploaded'),
+        data: {
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            },
+            public_url: publicUrl,
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
     getUser,
     changePassword,
     getListUsers,
+    uploadAvatar,
     getMe,
 };

@@ -23,5 +23,9 @@
     "user_retrieved": "用户获取成功。",
     "user_not_found": "未找到用户。",
     "users_listed": "用户列表已成功获取。",
+    "avatar_required": "头像是必填项。",
+    "avatar_invalid_type": "头像文件类型无效。",
+    "avatar_too_large": "头像文件大小超过{size}。",
+    "avatar_uploaded": "头像已成功上传。",
     "email_exists": "电子邮件已存在。"
 }

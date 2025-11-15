@@ -27,6 +27,10 @@ const UserModel = sequelize.define('users', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    avatar: {
+        type: DataTypes.UUID,
+        allowNull: true,
+    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
