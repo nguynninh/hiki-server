@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import {
+    forgotPassword,
     login,
     loginSocial,
 } from '../controllers/authController';
 import {
+    validateForgotPassword,
     validateLogin,
     validateLoginSocial,
 } from '../validation/validateAuth';
@@ -20,6 +22,12 @@ router.post(
     '/login/:provider/social',
     validateLoginSocial,
     loginSocial,
+);
+
+router.post(
+    '/forgot-password',
+    validateForgotPassword,
+    forgotPassword,
 );
 
 export default router;
