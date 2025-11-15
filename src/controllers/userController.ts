@@ -146,6 +146,40 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getMe = asyncHandler(async (req: Request, res: Response) => {
+    const userId = (req as any).user.sub;
+
+    const user = await UserModel.findOne({
+        where: { id: userId },
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+            include: [{
+                model: PermissionModel,
+                as: 'permissions',
+                attributes: ['id', 'name'],
+                through: { attributes: [] }
+            }]
+        }]
+    });
+
+    if (!user)
+        throw new NotFoundError(req.t('user:user_not_found'));
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_retrieved'),
+        data: {
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            }
+        }
+    });
+});
+
 const getUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
@@ -196,4 +230,5 @@ export {
     createUser,
     getUser,
     changePassword,
+    getMe,
 };
