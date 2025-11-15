@@ -2,6 +2,8 @@ import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from '../exception/AppError';
 
+const PASSWORD_MIN_LENGTH = 8;
+
 export const validateCreateUser = (req: Request, res: Response, next: NextFunction) => {
     const userSchema = Joi.object({
         email: Joi.string()
@@ -13,11 +15,11 @@ export const validateCreateUser = (req: Request, res: Response, next: NextFuncti
                 'any.required': req.t('user:email_required'),
             }),
         password: Joi.string()
-            .min(6)
+            .min(PASSWORD_MIN_LENGTH)
             .required()
             .messages({
                 'string.empty': req.t('user:password_required'),
-                'string.min': req.t('user:password_min_length', { min: 6 }),
+                'string.min': req.t('user:password_min_length', { min: PASSWORD_MIN_LENGTH }),
                 'any.required': req.t('user:password_required'),
             }),
         firstname: Joi.string()
@@ -63,7 +65,40 @@ export const validateGetUser = (req: Request, res: Response, next: NextFunction)
       }),
   });
 
-  const { error } = idSchema.validate(req.params, { abortEarly: false }); 
+  const { error } = idSchema.validate(req.body, { abortEarly: false }); 
+
+  if (error) {
+    const errors = error.details.map((d) => ({
+      field: d.path.join('.'),
+      message: d.message
+    }));
+    return next(new ValidationError(req.t('common:validation_error'), errors));
+  }
+
+  next();
+};
+
+export const validateChangePassword = (req: Request, res: Response, next: NextFunction) => {
+  const userSchema = Joi.object({
+    oldPassword: Joi.string()
+      .min(PASSWORD_MIN_LENGTH)
+      .required()
+      .messages({
+        'string.empty': req.t('user:old_password_required'),
+        'string.min': req.t('user:old_password_min_length', { min: PASSWORD_MIN_LENGTH }),
+        'any.required': req.t('user:old_password_required'),
+      }),
+    newPassword: Joi.string()
+      .min(PASSWORD_MIN_LENGTH)
+      .required()
+      .messages({
+        'string.empty': req.t('user:new_password_required'),
+        'string.min': req.t('user:new_password_min_length', { min: PASSWORD_MIN_LENGTH }),
+        'any.required': req.t('user:new_password_required'),
+      }),
+  });
+
+  const { error } = userSchema.validate(req.body, { abortEarly: false }); 
 
   if (error) {
     const errors = error.details.map((d) => ({

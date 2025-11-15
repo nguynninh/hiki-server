@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { ForbiddenError, UnauthorizedError } from "../exception/AppError";
+import { asyncHandler } from "../utils/asyncHandler";
 
 export const authorize = (...requiredRoles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user;
-      console.log("User in authorize middleware:", user);
 
       if (!user || !user.scope)
-        throw new UnauthorizedError("Invalid token");
+        throw new UnauthorizedError(req.t('auth:invalid_token'));
 
       const userRoles = user.scope.split(" ").map((role: string) => 
         role.replace(/^ROLE_/, "")
@@ -19,11 +19,11 @@ export const authorize = (...requiredRoles: string[]) => {
       );
 
       if (!hasPermission)
-        throw new ForbiddenError("Access denied");
+        throw new ForbiddenError(req.t('auth:access_denied'));
 
       next();
     } catch (err) {
-      throw new UnauthorizedError("Token verification failed");
+      throw new UnauthorizedError(req.t('auth:token_verification_failed'));
     }
-  };
+  });
 };

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from '../utils/responseFormatter';
-import { NotFoundError, ValidationError } from "../exception/AppError";
+import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/AppError";
 
 dotenv.config();
 
@@ -59,7 +59,35 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const changePassword = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+
+    const { oldPassword, newPassword } = req.body;
+
+    const user: any = await UserModel.findByPk(userId);
+
+    if (!user) {
+        throw new NotFoundError(req.t('auth:user_not_found'));
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+        throw new UnauthorizedError(req.t('auth:incorrect_old_password'));
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await user.update({ password: hashedPassword });
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('auth:password_change_successful'),
+    });
+});
+
 export {
     createUser,
     getUser,
+    changePassword,
 };

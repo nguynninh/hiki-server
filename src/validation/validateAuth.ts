@@ -2,6 +2,8 @@ import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from '../exception/AppError';
 
+const PASSWORD_MIN_LENGTH = 8;
+
 export const validateLogin = (req: Request, res: Response, next: NextFunction) => {
   const loginSchema = Joi.object({
     email: Joi.string()
@@ -13,11 +15,11 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction) =
         'any.required': req.t('auth:email_required'),
       }),
     password: Joi.string()
-      .min(6)
+      .min(PASSWORD_MIN_LENGTH)
       .required()
       .messages({
         'string.empty': req.t('auth:password_required'),
-        'string.min': req.t('auth:password_min_length', { min: 8 }),
+        'string.min': req.t('auth:password_min_length', { min: PASSWORD_MIN_LENGTH }),
         'any.required': req.t('auth:password_required'),
       }),
   });
@@ -142,11 +144,11 @@ export const validateResetPassword = (req: Request, res: Response, next: NextFun
                 'any.required': req.t('auth:otp_required'),
             }),
         password: Joi.string()
-            .min(8)
+            .min(PASSWORD_MIN_LENGTH)
             .required()
             .messages({
                 'string.empty': req.t('auth:password_required'),
-                'string.min': req.t('auth:password_min_length', { min: 8 }),
+                'string.min': req.t('auth:password_min_length', { min: PASSWORD_MIN_LENGTH }),
                 'any.required': req.t('auth:password_required'),
             }),
     });
