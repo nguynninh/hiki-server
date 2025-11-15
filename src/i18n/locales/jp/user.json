@@ -20,5 +20,7 @@
     "otp_invalid": "OTPコードが正しくありません。もう一度お試しください。",
     "code_required": "コードは必須です。",
     "code_length": "コードは{length}文字である必要があります。",
+    "user_retrieved": "ユーザーが正常に取得されました。",
+    "user_not_found": "ユーザーが見つかりません。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

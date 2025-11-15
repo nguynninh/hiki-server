@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
     changePassword,
     createUser,
+    getMe,
     getUser,
     verifyUser,
 } from '../controllers/userController';
@@ -26,6 +27,12 @@ router.post(
     '/verify',
     validateVerifyUser,
     verifyUser,
+);
+
+router.get(
+    '/me',
+    authenticate,
+    getMe,
 );
 
 router.get(

@@ -20,5 +20,7 @@
     "otp_invalid": "Mã OTP không đúng. Vui lòng thử lại.",
     "code_required": "Mã là bắt buộc.",
     "code_length": "Mã phải có {length} ký tự.",
+    "user_retrieved": "Người dùng đã được lấy thành công.",
+    "user_not_found": "Không tìm thấy người dùng.",
     "email_exists": "Email đã tồn tại."
 }

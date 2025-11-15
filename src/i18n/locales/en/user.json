@@ -20,5 +20,7 @@
     "otp_invalid": "OTP code is incorrect. Please try again.",
     "code_required": "Code is required.",
     "code_length": "Code must be {length} characters.",
+    "user_retrieved": "User retrieved successfully.",
+    "user_not_found": "User not found.",
     "email_exists": "Email already exists."
 }
