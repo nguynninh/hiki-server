@@ -23,5 +23,9 @@
     "user_retrieved": "Người dùng đã được lấy thành công.",
     "user_not_found": "Không tìm thấy người dùng.",
     "users_listed": "Danh sách người dùng đã được lấy thành công.",
+    "avatar_required": "Ảnh đại diện là bắt buộc.",
+    "avatar_invalid_type": "Loại tệp ảnh đại diện không hợp lệ.",
+    "avatar_too_large": "Kích thước tệp ảnh đại diện vượt quá {size}.",
+    "avatar_uploaded": "Ảnh đại diện đã được tải lên thành công.",
     "email_exists": "Email đã tồn tại."
 }

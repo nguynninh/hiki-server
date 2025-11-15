@@ -302,12 +302,17 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
 
     const { fileRecord, publicUrl } = await uploadImage(userId, avatar);
 
+    await user.update({ avatar: fileRecord.id });
+
     return successResponse(res, {
         code: 200,
-        message: req.t('user:avatar_uploaded_successfully'),
+        message: req.t('user:avatar_uploaded'),
         data: {
-            avatar_url: publicUrl,
-            fileRecord: fileRecord,
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            },
+            public_url: publicUrl,
         }
     });
 });

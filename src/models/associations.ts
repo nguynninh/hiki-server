@@ -41,6 +41,11 @@ UserModel.hasMany(FileMgmtModel, {
     as: 'uploadedFiles',
 });
 
+UserModel.belongsTo(FileMgmtModel, {
+    foreignKey: 'avatar',
+    as: 'avatarFile',
+});
+
 export {
     UserModel,
     RoleModel,

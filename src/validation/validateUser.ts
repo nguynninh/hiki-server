@@ -151,14 +151,14 @@ export const validateAvatar = (req: Request, res: Response, next: NextFunction) 
   }
 
   const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-  const maxSize = 5 * 1024 * 1024; // 5MB
+  const maxSize = 5 * 1024 * 1024;
 
   if (!allowedMimeTypes.includes(req.file.mimetype)) {
     return next(new ValidationError(req.t('user:avatar_invalid_type')));
   }
 
   if (req.file.size > maxSize) {
-    return next(new ValidationError(req.t('user:avatar_too_large', { max: '5MB' })));
+    return next(new ValidationError(req.t('user:avatar_too_large', { max: `${maxSize / (1024 * 1024)}MB` })));
   }
 
   next();

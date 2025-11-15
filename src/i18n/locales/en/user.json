@@ -23,5 +23,9 @@
     "user_retrieved": "User retrieved successfully.",
     "user_not_found": "User not found.",
     "users_listed": "User list has been retrieved successfully.",
+    "avatar_required": "Avatar is required.",
+    "avatar_invalid_type": "Invalid avatar file type.",
+    "avatar_too_large": "Avatar file size exceeds {size}.",
+    "avatar_uploaded": "Avatar has been uploaded successfully.",
     "email_exists": "Email already exists."
 }
