@@ -16,8 +16,6 @@ const router = Router();
 
 router.post(
     '/',
-    authenticate,
-    authorize('USER_CREATE'),
     validateCreateUser,
     createUser,
 );
