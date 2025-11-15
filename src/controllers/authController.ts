@@ -2,6 +2,8 @@ import { UserModel, RoleModel, PermissionModel } from "../models";
 import { Request, Response } from "express"
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { getAccesstoken } from '../utils/getAccesstoken';
 import { BadRequestError, NotFoundError, UnauthorizedError } from '../exception/AppError';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -175,10 +177,22 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
         hashedOTP
     );
 
+    const templatePath = path.join(__dirname, '../forms/mail_reset_password.html');
+    let htmlTemplate = fs.readFileSync(templatePath, 'utf-8');
+
+    htmlTemplate = htmlTemplate
+        .replace('{{name}}', user.firstname || 'User')
+        .replace('{{reset_code}}', otp)
+        .replace('{{time}}', String(WINDOW_SECONDS / 60))
+        .replace('{{operating_system}}', req.headers['user-agent']?.split('(')[1]?.split(')')[0] || 'Unknown')
+        .replace('{{browser_name}}', req.headers['user-agent']?.split(') ')[1]?.split('/')[0] || 'Unknown')
+        .replace('{{support_url}}', process.env.SUPPORT_URL || 'mailto:');
+
     await sendMail({
+        fromName: req.t('common:hiki_support'),
         to: email,
         subject: req.t('auth:reset_password_email_subject'),
-        text: req.t('auth:reset_password_email_text', { otp, minutes: WINDOW_SECONDS / 60 }),
+        html: htmlTemplate,
     });
 
     return successResponse(res, {
