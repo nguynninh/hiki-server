@@ -43,3 +43,16 @@ export async function uploadImage(
 
   return { fileRecord, publicUrl };
 }
+
+export async function deleteFile(fileId: string): Promise<void> {
+  const fileRecord: any = await FileMgmtModel.findByPk(fileId);
+  if (fileRecord) {
+    await minioClient.removeObject(BUCKET_NAME, fileRecord.path);
+    await fileRecord.destroy();
+  }
+}
+
+export async function getFileUrl(fileId: string): Promise<string | null> {
+  const fileRecord: any = await FileMgmtModel.findByPk(fileId);
+  return fileRecord ? `${AWS_ENDPOINT}/${BUCKET_NAME}/${fileRecord.path}`: null;
+}

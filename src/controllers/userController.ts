@@ -10,7 +10,7 @@ import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
-import { uploadImage } from "../services/fileService";
+import { deleteFile, uploadImage } from "../services/fileService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
@@ -301,6 +301,9 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
     }
 
     const { fileRecord, publicUrl } = await uploadImage(userId, avatar);
+
+    if (user.avatar)
+        await deleteFile(user.avatar);
 
     await user.update({ avatar: fileRecord.id });
 
