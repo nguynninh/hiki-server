@@ -11,5 +11,14 @@
     "last_name_max_length": "姓氏不能超过{max}个字符。",
     "user_created": "用户已成功创建。",
     "user_getted": "用户已成功获取。",
+    "email_already_in_use": "电子邮件已被使用。",
+    "verification_code_subject": "您的账户验证码",
+    "verification_code_sent": "验证码已发送。",
+    "too_many_requests": "请求过多。请稍后再试。",
+    "otp_expired_or_invalid": "OTP代码已过期或无效。",
+    "too_many_attempts": "输入错误{max}次。电子邮件暂时锁定{window}分钟。",
+    "otp_invalid": "OTP代码不正确。请重试。",
+    "code_required": "代码是必填项。",
+    "code_length": "代码必须为{length}个字符。",
     "email_exists": "电子邮件已存在。"
 }

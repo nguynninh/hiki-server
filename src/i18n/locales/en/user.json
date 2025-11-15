@@ -11,5 +11,14 @@
     "last_name_max_length": "Last name must not exceed {max} characters.",
     "user_created": "User has been created successfully.",
     "user_getted": "User has been retrieved successfully.",
+    "email_already_in_use": "Email is already in use.",
+    "verification_code_subject": "Your account verification code",
+    "verification_code_sent": "Verification code has been sent.",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "otp_expired_or_invalid": "OTP code has expired or is invalid.",
+    "too_many_attempts": "Failed {max} times. Email temporarily locked for {window} minutes.",
+    "otp_invalid": "OTP code is incorrect. Please try again.",
+    "code_required": "Code is required.",
+    "code_length": "Code must be {length} characters.",
     "email_exists": "Email already exists."
 }

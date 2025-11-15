@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from '../exception/AppError';
 
 const PASSWORD_MIN_LENGTH = 8;
+const CODE_LENGTH = 6;
 
 export const validateCreateUser = (req: Request, res: Response, next: NextFunction) => {
     const userSchema = Joi.object({
@@ -37,6 +38,14 @@ export const validateCreateUser = (req: Request, res: Response, next: NextFuncti
                 'string.empty': req.t('user:last_name_required'),
                 'string.max': req.t('user:last_name_max_length', { max: 30 }),
                 'any.required': req.t('user:last_name_required'),
+            }),
+        code: Joi.string()
+            .length(CODE_LENGTH)
+            .required()
+            .messages({
+                'string.empty': req.t('user:code_required'),
+                'string.length': req.t('user:code_length', { length: CODE_LENGTH }),
+                'any.required': req.t('user:code_required'),
             }),
     });
 
@@ -95,6 +104,31 @@ export const validateChangePassword = (req: Request, res: Response, next: NextFu
         'string.empty': req.t('user:new_password_required'),
         'string.min': req.t('user:new_password_min_length', { min: PASSWORD_MIN_LENGTH }),
         'any.required': req.t('user:new_password_required'),
+      }),
+  });
+
+  const { error } = userSchema.validate(req.body, { abortEarly: false }); 
+
+  if (error) {
+    const errors = error.details.map((d) => ({
+      field: d.path.join('.'),
+      message: d.message
+    }));
+    return next(new ValidationError(req.t('common:validation_error'), errors));
+  }
+
+  next();
+};
+
+export const validateVerifyUser = (req: Request, res: Response, next: NextFunction) => {
+  const userSchema = Joi.object({
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required()
+      .messages({
+        'string.empty': req.t('user:email_required'),
+        'string.email': req.t('user:email_invalid'),
+        'any.required': req.t('user:email_required'),
       }),
   });
 

@@ -11,6 +11,7 @@ import { successResponse } from "../utils/responseFormatter";
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
+import { parseUserAgent } from "../utils/parseUserAgent";
 
 dotenv.config();
 
@@ -179,13 +180,13 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
 
     const templatePath = path.join(__dirname, '../forms/mail_reset_password.html');
     let htmlTemplate = fs.readFileSync(templatePath, 'utf-8');
-
+    const { operatingSystem, browserName } = parseUserAgent(req.headers['user-agent'] || '');
     htmlTemplate = htmlTemplate
         .replace('{{name}}', user.firstname || 'User')
         .replace('{{reset_code}}', otp)
         .replace('{{time}}', String(WINDOW_SECONDS / 60))
-        .replace('{{operating_system}}', req.headers['user-agent']?.split('(')[1]?.split(')')[0] || 'Unknown')
-        .replace('{{browser_name}}', req.headers['user-agent']?.split(') ')[1]?.split('/')[0] || 'Unknown')
+        .replace('{{operating_system}}', operatingSystem)
+        .replace('{{browser_name}}', browserName)
         .replace('{{support_url}}', process.env.SUPPORT_URL || 'mailto:');
 
     await sendMail({
@@ -199,7 +200,10 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
         code: 200,
         message: req.t('auth:reset_link_sent'),
         data: {
-            ...(process.env.NODE_ENV === 'development' ? { otp, max_attempts: MAX_ATTEMPTS } : {}),
+            email,
+            ...(process.env.NODE_ENV === 'development' ? { otp } : {}),
+            max_attempts: MAX_ATTEMPTS,
+            expires_in: WINDOW_SECONDS,
         },
     });
 });
@@ -213,7 +217,7 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
         throw new NotFoundError(req.t("auth:user_not_found"));
 
     const resetPassword = redisKey.RESET_PASSWORD(user.id);
-    const attemptsKey = redisKey.OTP_ATTEMPTS(user.id);
+    const attemptsKey = redisKey.OTP_ATTEMPTS_RESET_PASSWORD(user.id);
 
     const attempts = Number(await redisClient.get(attemptsKey)) || 0;
 

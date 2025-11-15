@@ -11,5 +11,14 @@
     "last_name_max_length": "姓は最大{max}文字までです。",
     "user_created": "ユーザーが正常に作成されました。",
     "user_getted": "ユーザーが正常に取得されました。",
+    "email_already_in_use": "メールアドレスは既に使用されています。",
+    "verification_code_subject": "アカウント確認コード",
+    "verification_code_sent": "確認コードが送信されました。",
+    "too_many_requests": "リクエストが多すぎます。後でもう一度お試しください。",
+    "otp_expired_or_invalid": "OTPコードが期限切れまたは無効です。",
+    "too_many_attempts": "{max}回間違えました。メールは{window}分間ロックされます。",
+    "otp_invalid": "OTPコードが正しくありません。もう一度お試しください。",
+    "code_required": "コードは必須です。",
+    "code_length": "コードは{length}文字である必要があります。",
     "email_exists": "メールアドレスは既に存在しています。"
 }
