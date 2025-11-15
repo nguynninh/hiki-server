@@ -4,7 +4,7 @@ import crypto from "crypto";
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { getAccesstoken } from '../utils/getAccesstoken';
-import { NotFoundError, UnauthorizedError } from '../exception/AppError';
+import { BadRequestError, NotFoundError, UnauthorizedError } from '../exception/AppError';
 import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from "../utils/responseFormatter";
 import redisClient from "../database/redisClient";
@@ -163,31 +163,69 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
         throw new NotFoundError(req.t('auth:user_not_found'));
     }
 
-    const rawToken = crypto.randomBytes(32).toString("hex");
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const hashedToken = await bcrypt.hash(rawToken, 10);
+    const hashedOTP = await bcrypt.hash(otp, 10);
 
     await redisClient.setEx(
         `reset_password:${user.id}`,
         WINDOW_SECONDS,
-        hashedToken
+        hashedOTP
     );
-
-    await redisClient.setEx(
-        `reset_password_attempts:${user.id}`,
-        WINDOW_SECONDS,
-        MAX_ATTEMPTS.toString()
-    );
-
-    const frontendUrl = process.env.NODE_ENV === 'development' ? process.env.FRONTEND_URL : process.env.FRONTEND_URL_PRODUCTION;
-    const resetUrl = `${frontendUrl}/reset-password?token=${rawToken}&uid=${user.id}`;
 
     return successResponse(res, {
         code: 200,
         message: req.t('auth:reset_link_sent'),
         data: {
-            ...(process.env.NODE_ENV === 'development' ? { resetUrl, max_attempts: MAX_ATTEMPTS } : {}),
+            ...(process.env.NODE_ENV === 'development' ? { otp, max_attempts: MAX_ATTEMPTS } : {}),
         },
+    });
+});
+
+const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+    const { email, otp, password } = req.body;
+
+    const user: any = await UserModel.findOne({ where: { email } });
+
+    if (!user)
+        throw new NotFoundError(req.t("auth:user_not_found"));
+
+    const redisKey = `reset_password:${user.id}`;
+    const attemptsKey = `reset_attempts:${user.id}`;
+
+    const attempts = Number(await redisClient.get(attemptsKey)) || 0;
+
+    if (attempts >= MAX_ATTEMPTS) {
+        throw new UnauthorizedError(req.t("auth:too_many_requests"));
+    }
+
+    const hashedToken = await redisClient.get(redisKey);
+    if (!hashedToken)
+        throw new UnauthorizedError(req.t("auth:otp_expired_or_invalid"));
+
+    const isMatch = await bcrypt.compare(otp, hashedToken);
+
+    if (!isMatch) {
+        const newAttempts = await redisClient.incr(attemptsKey);
+
+        if (newAttempts === 1)
+            await redisClient.expire(attemptsKey, WINDOW_SECONDS);
+
+        if (newAttempts >= MAX_ATTEMPTS)
+            throw new UnauthorizedError(req.t("auth:too_many_attempts", { max: MAX_ATTEMPTS, window: WINDOW_SECONDS / 60 }));
+
+        throw new UnauthorizedError(req.t("auth:otp_invalid"));
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await user.update({ password: hashedPassword });
+
+    await redisClient.del(redisKey);
+    await redisClient.del(attemptsKey);
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('auth:password_reset_successful'),
     });
 });
 
@@ -195,4 +233,5 @@ export {
     login,
     loginSocial,
     forgotPassword,
+    resetPassword,
 };

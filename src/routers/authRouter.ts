@@ -3,11 +3,13 @@ import {
     forgotPassword,
     login,
     loginSocial,
+    resetPassword,
 } from '../controllers/authController';
 import {
     validateForgotPassword,
     validateLogin,
     validateLoginSocial,
+    validateResetPassword,
 } from '../validation/validateAuth';
 
 const router = Router();
@@ -28,6 +30,12 @@ router.post(
     '/forgot-password',
     validateForgotPassword,
     forgotPassword,
+);
+
+router.post(
+    '/reset-password',
+    validateResetPassword,
+    resetPassword,
 );
 
 export default router;
