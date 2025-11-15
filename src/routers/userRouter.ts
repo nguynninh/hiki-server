@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import {
+    changePassword,
     createUser,
     getUser,
 } from '../controllers/userController';
 import { 
+    validateChangePassword,
     validateCreateUser,
     validateGetUser,
 } from '../validation/validateUser';
@@ -26,6 +28,14 @@ router.get(
     authorize('USER_VIEW'),
     validateGetUser,
     getUser,
+);
+
+router.post(
+    '/change-password',
+    authenticate,
+    authorize('USER_CHANGE_PASSWORD'),
+    validateChangePassword,
+    changePassword,
 );
 
 export default router;
