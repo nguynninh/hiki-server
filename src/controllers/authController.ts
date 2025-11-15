@@ -1,6 +1,5 @@
 import { UserModel, RoleModel, PermissionModel } from "../models";
 import { Request, Response } from "express"
-import crypto from "crypto";
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { getAccesstoken } from '../utils/getAccesstoken';
@@ -8,6 +7,7 @@ import { BadRequestError, NotFoundError, UnauthorizedError } from '../exception/
 import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from "../utils/responseFormatter";
 import redisClient from "../database/redisClient";
+import redisKey from "../constants/keyRedis";
 
 dotenv.config();
 
@@ -167,8 +167,9 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
 
     const hashedOTP = await bcrypt.hash(otp, 10);
 
+    const resetPassword = redisKey.RESET_PASSWORD(user.id);
     await redisClient.setEx(
-        `reset_password:${user.id}`,
+        resetPassword,
         WINDOW_SECONDS,
         hashedOTP
     );
@@ -190,8 +191,8 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
     if (!user)
         throw new NotFoundError(req.t("auth:user_not_found"));
 
-    const redisKey = `reset_password:${user.id}`;
-    const attemptsKey = `reset_attempts:${user.id}`;
+    const resetPassword = redisKey.RESET_PASSWORD(user.id);
+    const attemptsKey = redisKey.OTP_ATTEMPTS(user.id);
 
     const attempts = Number(await redisClient.get(attemptsKey)) || 0;
 
@@ -199,7 +200,7 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
         throw new UnauthorizedError(req.t("auth:too_many_requests"));
     }
 
-    const hashedToken = await redisClient.get(redisKey);
+    const hashedToken = await redisClient.get(resetPassword);
     if (!hashedToken)
         throw new UnauthorizedError(req.t("auth:otp_expired_or_invalid"));
 
@@ -220,7 +221,7 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await user.update({ password: hashedPassword });
 
-    await redisClient.del(redisKey);
+    await redisClient.del(resetPassword);
     await redisClient.del(attemptsKey);
 
     return successResponse(res, {
