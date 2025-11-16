@@ -165,3 +165,26 @@ export const validateResetPassword = (req: Request, res: Response, next: NextFun
 
     next();
 };
+
+export const validateRefreshToken = (req: Request, res: Response, next: NextFunction) => {
+    const resetPasswordSchema = Joi.object({
+        refresh_token: Joi.string()
+            .required()
+            .messages({
+                'string.empty': req.t('auth:refresh_token_required'),
+                'any.required': req.t('auth:refresh_token_required'),
+            }),
+    });
+
+    const { error } = resetPasswordSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
