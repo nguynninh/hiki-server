@@ -97,7 +97,7 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
-            }
+            },
         }
     });
 });
@@ -109,11 +109,17 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
     if (user)
         throw new ValidationError(req.t('user:email_already_in_use'));
 
+    const rd_verify_user = redisKey.OTP_CREATE_ACCOUNT(email);
+    
+    const existingOTP = await redisClient.get(rd_verify_user);
+    if (existingOTP) {
+        throw new ValidationError(req.t("user:otp_already_sent"));
+    }
+
     const code = generateCode(6);
 
     const hashedCode = await bcrypt.hash(code, 10);
 
-    const rd_verify_user = redisKey.OTP_CREATE_ACCOUNT(email);
     await redisClient.setEx(
         rd_verify_user,
         VERIFY_CREATE_WINDOW_SECONDS,
