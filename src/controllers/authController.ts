@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import jwt from 'jsonwebtoken';
 import { getAccesstoken } from '../utils/getAccesstoken';
 import { BadRequestError, NotFoundError, UnauthorizedError } from '../exception/AppError';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -158,6 +159,66 @@ const loginSocial = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const refreshToken = asyncHandler(async (req: Request, res: Response) => {
+    const { refresh_token } = req.body;
+
+    let decoded: any;
+    try {
+        decoded = jwt.verify(refresh_token, process.env.JWT_REFRESH_SECRET as string) as any;
+    } catch (err) {
+        throw new UnauthorizedError(req.t('auth:invalid_refresh_token'));
+    }
+
+    const userId = decoded.sub;
+    const user = await UserModel.findByPk(userId, {
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+            include: [{
+                model: PermissionModel,
+                as: 'permissions',
+                attributes: ['id', 'name'],
+                through: { attributes: [] }
+            }]
+        }]
+    });
+
+    if (!user) {
+        throw new NotFoundError(req.t('auth:user_not_found'));
+    }
+
+    const userRoles = (user as any).roles || [];
+    const roleNames = userRoles.map((role: any) => role.name);
+
+    const allPermissions = new Set<string>();
+    userRoles.forEach((role: any) => {
+        if (role.permissions && role.permissions.length > 0) {
+            role.permissions.forEach((permission: any) => {
+                allPermissions.add(permission.name);
+            });
+        }
+    });
+    const permissionNames = Array.from(allPermissions);
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('auth:token_refreshed'),
+        data: {
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            },
+            auth: {
+                access_token: await getAccesstoken((user as any).id, roleNames, permissionNames, false),
+                refresh_token: await getAccesstoken((user as any).id, roleNames, permissionNames, true),
+                expires_in: 600,
+            }
+        }
+    });
+});
+
 const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.body;
 
@@ -258,6 +319,7 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
 export {
     login,
     loginSocial,
+    refreshToken,
     forgotPassword,
     resetPassword,
 };
