@@ -412,12 +412,19 @@ const createNewFollow = asyncHandler(async (req: Request, res: Response) => {
         where: {
             user_id: userId,
             target_id: targetId,
-            type: keyUserRelationshipType.FOLLOW,
         }
     });
 
     if (existingRelationship) {
-        throw new ValidationError(req.t('user:already_following_user'));
+        const relationType = (existingRelationship as any).type;
+        
+        if (relationType === keyUserRelationshipType.FOLLOW) {
+            throw new ValidationError(req.t('user:already_following_user'));
+        }
+        
+        if (relationType === keyUserRelationshipType.BLOCKED) {
+            throw new ValidationError(req.t('user:must_unblock_before_follow'));
+        }
     }
 
     await UserRelationship.create({
@@ -432,6 +439,30 @@ const createNewFollow = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const handleUnfollow = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    const existingRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: userId,
+            target_id: targetId,
+            type: keyUserRelationshipType.FOLLOW,
+        }
+    });
+
+    if (!existingRelationship) {
+        throw new NotFoundError(req.t('user:not_following_user'));
+    }
+
+    await existingRelationship.destroy();
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_unfollowed_successfully'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -443,4 +474,5 @@ export {
     getListFollowUsers,
     getListUsersFollow,
     createNewFollow,
+    handleUnfollow,
 };

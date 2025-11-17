@@ -30,5 +30,11 @@
     "otp_already_sent": "OTPコードは既に送信されています。数分後にもう一度お試しください。",
     "followed_users_listed": "フォロー中のユーザーリストが正常に取得されました。",
     "follower_users_listed": "フォロワーリストが正常に取得されました。",
+    "cant_follow_yourself": "自分自身をフォローすることはできません。",
+    "already_following_user": "このユーザーは既にフォローしています。",
+    "user_followed_successfully": "ユーザーのフォローに成功しました。",
+    "not_following_user": "このユーザーをフォローしていません。",
+    "must_unblock_before_follow": "フォローする前にこのユーザーのブロックを解除する必要があります。",
+    "user_unfollowed_successfully": "ユーザーのフォロー解除に成功しました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }
