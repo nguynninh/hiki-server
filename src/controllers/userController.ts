@@ -161,18 +161,6 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 
     const user: any = await UserModel.findOne({
         where: { id: userId },
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            include: [{
-                model: PermissionModel,
-                as: 'permissions',
-                attributes: ['id', 'name'],
-                through: { attributes: [] }
-            }]
-        }]
     });
 
     if (!user)
@@ -196,9 +184,11 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 const getUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await UserModel.findByPk(id);
+    const user: any = await UserModel.findByPk(id);
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
+
+    const avatarUrl = user.avatar ? await getFileUrl(user.avatar) : null;
 
     return successResponse(res, {
         message: req.t('user:user_getted'),
@@ -206,6 +196,7 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: avatarUrl,
             }
         }
     });
@@ -232,38 +223,19 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         limit: limitNumber,
         offset,
         order: [['created_at', 'DESC']],
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            where: {
-                name: {
-                    [require('sequelize').Op.ne]: roles.SUPER_ADMIN
-                }
-            },
-            required: false
-        }]
     });
-
-    const filteredUsers = users.filter(user => {
-        const userRoles = (user as any).roles || [];
-        return !userRoles.some((role: any) => role.name === roles.SUPER_ADMIN);
-    });
-
-    const filteredTotal = total - (users.length - filteredUsers.length);
 
     return successResponse(res, {
         message: req.t('user:users_listed'),
         data: {
-            users: filteredUsers.map(user => ({
+            users: users.map(user => ({
                 ...user.toJSON(),
                 password: undefined,
             })),
             paginations: Pagination(
                 pageNumber,
                 limitNumber,
-                filteredTotal,
+                total,
             ),
         }
     });
@@ -423,6 +395,43 @@ const getListUsersFollow = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const createNewFollow = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    if (userId === targetId) {
+        throw new ValidationError(req.t('user:cant_follow_yourself'));
+    }
+
+    const targetUser = await UserModel.findByPk(targetId);
+    if (!targetUser) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    const existingRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: userId,
+            target_id: targetId,
+            type: keyUserRelationshipType.FOLLOW,
+        }
+    });
+
+    if (existingRelationship) {
+        throw new ValidationError(req.t('user:already_following_user'));
+    }
+
+    await UserRelationship.create({
+        user_id: userId,
+        target_id: targetId,
+        type: keyUserRelationshipType.FOLLOW,
+    });
+
+    return successResponse(res, {
+        code: 201,
+        message: req.t('user:user_followed_successfully'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -433,4 +442,5 @@ export {
     getMe,
     getListFollowUsers,
     getListUsersFollow,
+    createNewFollow,
 };
