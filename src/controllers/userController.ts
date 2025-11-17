@@ -161,18 +161,6 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 
     const user: any = await UserModel.findOne({
         where: { id: userId },
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            include: [{
-                model: PermissionModel,
-                as: 'permissions',
-                attributes: ['id', 'name'],
-                through: { attributes: [] }
-            }]
-        }]
     });
 
     if (!user)
@@ -196,20 +184,7 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 const getUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await UserModel.findByPk(id, {
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            include: [{
-                model: PermissionModel,
-                as: 'permissions',
-                attributes: ['id', 'name'],
-                through: { attributes: [] }
-            }]
-        }]
-    });
+    const user = await UserModel.findByPk(id);
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
 
