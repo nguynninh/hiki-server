@@ -43,5 +43,6 @@
     "user_blocked_successfully": "Bạn đã chặn người dùng thành công.",
     "must_follow_or_restrict_before_block": "Bạn phải theo dõi hoặc hạn chế người dùng này trước khi chặn họ.",
     "cant_block_yourself": "Bạn không thể chặn chính mình.",
+    "must_unblock_before_block": "Không thể thực hiện hành động này do bạn đã bị chặn.",
     "email_exists": "Email đã tồn tại."
 }

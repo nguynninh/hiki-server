@@ -273,6 +273,18 @@ const createNewBlock = asyncHandler(async (req: Request, res: Response) => {
         throw new NotFoundError(req.t('user:user_not_found'));
     }
 
+    const reverseRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: targetId,
+            target_id: userId,
+            type: keyUserRelationshipType.BLOCKED,
+        }
+    });
+
+    if (reverseRelationship) {
+        throw new ValidationError(req.t('user:must_unblock_before_block'));
+    }
+
     const existingRelationship = await UserRelationship.findOne({
         where: {
             user_id: userId,
