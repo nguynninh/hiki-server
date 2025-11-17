@@ -19,6 +19,7 @@ import {
     validateCreateFollow,
     validateCreateUser,
     validateGetUser,
+    validateUnfollow,
     validateVerifyUser,
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
@@ -103,6 +104,7 @@ router.delete(
     "/:targetId/follow",
     authenticate,
     authorize('USER_UNFOLLOW'),
+    validateUnfollow,
     handleUnfollow,
 );
 
