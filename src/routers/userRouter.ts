@@ -5,6 +5,7 @@ import {
     createUser,
     getListFollowUsers,
     getListUsers,
+    getListUsersFollow,
     getMe,
     getUser,
     uploadAvatar,
@@ -19,6 +20,7 @@ import {
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
+import { get } from 'http';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -53,6 +55,13 @@ router.get(
     authenticate,
     authorize('USER_LIST_FOLLOWING'),
     getListFollowUsers,
+);
+
+router.get(
+    "/followers",
+    authenticate,
+    authorize('USER_LIST_FOLLOWERS'),
+    getListUsersFollow,
 );
 
 router.get(
