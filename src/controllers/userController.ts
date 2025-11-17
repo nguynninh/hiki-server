@@ -184,9 +184,11 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 const getUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await UserModel.findByPk(id);
+    const user: any = await UserModel.findByPk(id);
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
+
+    const avatarUrl = user.avatar ? await getFileUrl(user.avatar) : null;
 
     return successResponse(res, {
         message: req.t('user:user_getted'),
@@ -194,6 +196,7 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: avatarUrl,
             }
         }
     });
