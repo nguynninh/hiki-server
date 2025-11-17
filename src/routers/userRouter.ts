@@ -16,6 +16,7 @@ import {
 import { 
     validateAvatar,
     validateChangePassword,
+    validateCreateFollow,
     validateCreateUser,
     validateGetUser,
     validateVerifyUser,
@@ -94,6 +95,7 @@ router.post(
     "/:targetId/follow",
     authenticate,
     authorize('USER_CREATE_FOLLOW'),
+    validateCreateFollow,
     createNewFollow,
 );
 
