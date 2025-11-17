@@ -43,5 +43,8 @@
     "user_blocked_successfully": "You have successfully blocked the user.",
     "must_follow_or_restrict_before_block": "You must follow or restrict this user before blocking them.",
     "cant_block_yourself": "You cannot block yourself.",
+    "must_unblock_before_block": "This action cannot be performed because you have been blocked.",
+    "not_blocked_user": "You have not blocked this user.",
+    "user_unblocked_successfully": "You have successfully unblocked the user.",
     "email_exists": "Email already exists."
 }

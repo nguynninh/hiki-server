@@ -43,5 +43,8 @@
     "user_blocked_successfully": "ユーザーのブロックに成功しました。",
     "must_follow_or_restrict_before_block": "このユーザーをブロックする前にフォローまたは制限する必要があります。",
     "cant_block_yourself": "自分自身をブロックすることはできません。",
+    "mail_unblock_before_block": "このアクションは、あなたがブロックされているため実行できません。",
+    "not_blocked_user": "このユーザーはブロックされていません。",
+    "user_unblocked_successfully": "ユーザーのブロック解除に成功しました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }
