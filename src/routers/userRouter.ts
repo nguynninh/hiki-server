@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import {
     changePassword,
+    createNewFollow,
     createUser,
     getListFollowUsers,
     getListUsers,
@@ -87,6 +88,25 @@ router.post(
     upload.single('avatar'),
     validateAvatar,
     uploadAvatar,
+);
+
+router.post(
+    "/:targetId/follow",
+    authenticate,
+    authorize('USER_CREATE_FOLLOW'),
+    createNewFollow,
+);
+
+router.get(
+    "/:targetId/follow",
+    authenticate,
+    authorize('USER_VIEW_FOLLOW'),
+);
+
+router.delete(
+    "/:targetId/follow",
+    authenticate,
+    authorize('USER_UNFOLLOW'),
 );
 
 export default router;

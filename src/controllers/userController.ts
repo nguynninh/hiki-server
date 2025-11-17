@@ -423,6 +423,43 @@ const getListUsersFollow = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const createNewFollow = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    if (userId === targetId) {
+        throw new ValidationError(req.t('user:cant_follow_yourself'));
+    }
+
+    const targetUser = await UserModel.findByPk(targetId);
+    if (!targetUser) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    const existingRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: userId,
+            target_id: targetId,
+            type: keyUserRelationshipType.FOLLOW,
+        }
+    });
+
+    if (existingRelationship) {
+        throw new ValidationError(req.t('user:already_following_user'));
+    }
+
+    await UserRelationship.create({
+        user_id: userId,
+        target_id: targetId,
+        type: keyUserRelationshipType.FOLLOW,
+    });
+
+    return successResponse(res, {
+        code: 201,
+        message: req.t('user:user_followed_successfully'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -433,4 +470,5 @@ export {
     getMe,
     getListFollowUsers,
     getListUsersFollow,
+    createNewFollow,
 };
