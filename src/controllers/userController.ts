@@ -10,7 +10,7 @@ import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
-import { deleteFile, uploadImage } from "../services/fileService";
+import { deleteFile, getFileUrl, uploadImage } from "../services/fileService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
@@ -157,7 +157,7 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
 const getMe = asyncHandler(async (req: Request, res: Response) => {
     const userId = (req as any).user.sub;
 
-    const user = await UserModel.findOne({
+    const user: any = await UserModel.findOne({
         where: { id: userId },
         include: [{
             model: RoleModel,
@@ -176,6 +176,8 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
 
+    const avatarUrl = user.avatar ? await getFileUrl(user.avatar) : null;
+
     return successResponse(res, {
         code: 200,
         message: req.t('user:user_retrieved'),
@@ -183,6 +185,7 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: avatarUrl,
             }
         }
     });
