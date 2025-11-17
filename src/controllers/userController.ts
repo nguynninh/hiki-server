@@ -468,6 +468,16 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
     const { targetId } = req.params;
     const userId = (req as any).user.sub;
 
+    const user: any = await UserModel.findByPk(userId);
+    if (!user) {
+        throw new NotFoundError(req.t('auth:user_not_found'));
+    }
+
+    const targetUser: any = await UserModel.findByPk(targetId);
+    if (!targetUser) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
     const relationships = await UserRelationship.findAll({
         where: {
             [Op.or]: [
@@ -476,9 +486,23 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
             ]
         }
     });
+    
+    const avatarUrlUser = user.avatar ? await getFileUrl(user.avatar) : null;
+    const avatarUrlTarget = targetUser.avatar ? await getFileUrl(targetUser.avatar) : null;
 
     const result = {
-        targetId,
+        userId: userId,
+        user: {
+            ...user.toJSON(),
+            password: undefined,
+            avatar: avatarUrlUser,
+        },
+        targetId: targetId,
+        target: {
+            ...targetUser.toJSON(),
+            password: undefined,
+            avatar: avatarUrlTarget,
+        },
         follow: {
             i_follow: false,
             follow_me: false,
