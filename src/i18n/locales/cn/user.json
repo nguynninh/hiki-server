@@ -36,5 +36,8 @@
     "not_following_user": "您未关注此用户。",
     "must_unblock_before_follow": "您必须先解除屏蔽此用户才能关注他们。",
     "user_unfollowed_successfully": "您已成功取消关注该用户。",
+    "target_id_required": "Target ID是必填项。",
+    "target_id_invalid": "Target ID无效。",
+    "user_relationship_retrieved": "用户关系已成功获取。",
     "email_exists": "电子邮件已存在。"
 }

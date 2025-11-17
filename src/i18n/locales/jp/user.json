@@ -36,5 +36,8 @@
     "not_following_user": "このユーザーをフォローしていません。",
     "must_unblock_before_follow": "フォローする前にこのユーザーのブロックを解除する必要があります。",
     "user_unfollowed_successfully": "ユーザーのフォロー解除に成功しました。",
+    "target_id_required": "Target IDは必須です。",
+    "target_id_invalid": "Target IDが無効です。",
+    "user_relationship_retrieved": "ユーザー関係が正常に取得されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

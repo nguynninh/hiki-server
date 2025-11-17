@@ -16,6 +16,7 @@ import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
 import Pagination from "../dto/Pagination";
 import keyUserRelationshipType from "../constants/keyUserRelationshipType";
+import { Op } from "sequelize";
 
 dotenv.config();
 
@@ -463,6 +464,65 @@ const handleUnfollow = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getUserRelationship = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    const relationships = await UserRelationship.findAll({
+        where: {
+            [Op.or]: [
+                { user_id: userId, target_id: targetId },
+                { user_id: targetId, target_id: userId },
+            ]
+        }
+    });
+
+    const result = {
+        targetId,
+        follow: {
+            i_follow: false,
+            follow_me: false,
+            areFriends: false,
+        },
+        restriction: {
+            i_restrict: false,
+            restrict_me: false,
+        },
+        block: {
+            i_blocked: false,
+            blocked_me: false,
+        }
+    };
+
+    relationships.forEach((rel: any) => {
+        if (rel.user_id === userId && rel.target_id === targetId) {
+            if (rel.type === keyUserRelationshipType.FOLLOW) {
+                result.follow.i_follow = true;
+            } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
+                result.restriction.i_restrict = true;
+            } else if (rel.type === keyUserRelationshipType.BLOCKED) {
+                result.block.i_blocked = true;
+            }
+        } else if (rel.user_id === targetId && rel.target_id === userId) {
+            if (rel.type === keyUserRelationshipType.FOLLOW) {
+                result.follow.follow_me = true;
+            } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
+                result.restriction.restrict_me = true;
+            } else if (rel.type === keyUserRelationshipType.BLOCKED) {
+                result.block.blocked_me = true;
+            }
+        }
+    });
+
+    result.follow.areFriends = result.follow.i_follow && result.follow.follow_me;
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_relationship_retrieved'),
+        data: result,
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -475,4 +535,5 @@ export {
     getListUsersFollow,
     createNewFollow,
     handleUnfollow,
+    getUserRelationship,
 };

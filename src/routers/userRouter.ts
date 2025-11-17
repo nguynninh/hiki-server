@@ -9,6 +9,7 @@ import {
     getListUsersFollow,
     getMe,
     getUser,
+    getUserRelationship,
     handleUnfollow,
     uploadAvatar,
     verifyUser,
@@ -19,6 +20,7 @@ import {
     validateCreateFollow,
     validateCreateUser,
     validateGetUser,
+    validateGetUserRelationship,
     validateUnfollow,
     validateVerifyUser,
 } from '../validation/validateUser';
@@ -90,6 +92,14 @@ router.post(
     upload.single('avatar'),
     validateAvatar,
     uploadAvatar,
+);
+
+router.get(
+    "/:targetId/relationship", 
+    authenticate,
+    authorize('USER_VIEW_RELATIONSHIP'),
+    validateGetUserRelationship,
+    getUserRelationship,
 );
 
 router.post(

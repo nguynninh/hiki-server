@@ -36,5 +36,8 @@
     "not_following_user": "Bạn không theo dõi người dùng này.",
     "must_unblock_before_follow": "Bạn phải bỏ chặn người dùng này trước khi theo dõi họ.",
     "user_unfollowed_successfully": "Bạn đã hủy theo dõi người dùng thành công.",
+    "target_id_required": "Target ID là bắt buộc.",
+    "target_id_invalid": "Target ID không hợp lệ.",
+    "user_relationship_retrieved": "Mối quan hệ người dùng đã được lấy thành công.",
     "email_exists": "Email đã tồn tại."
 }
