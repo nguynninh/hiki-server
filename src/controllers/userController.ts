@@ -422,6 +422,10 @@ const createNewFollow = asyncHandler(async (req: Request, res: Response) => {
         if (relationType === keyUserRelationshipType.FOLLOW) {
             throw new ValidationError(req.t('user:already_following_user'));
         }
+
+        if (relationType === keyUserRelationshipType.RESTRICTION) {
+            throw new ValidationError(req.t('user:already_following_user'));
+        }
         
         if (relationType === keyUserRelationshipType.BLOCKED) {
             throw new ValidationError(req.t('user:must_unblock_before_follow'));
