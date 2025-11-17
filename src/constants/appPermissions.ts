@@ -8,6 +8,7 @@ const permissionsList = [
   "USER_CREATE_FOLLOW",
   "USER_VIEW_RELATIONSHIP",
   "USER_UNFOLLOW",
+  "USER_CREATE_BLOCK",
   "ROLE_CREATE",
   "PERMISSION_VIEW",
 ];

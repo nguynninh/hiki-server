@@ -32,6 +32,7 @@
     "follower_users_listed": "Danh sách người theo dõi bạn đã được lấy thành công.",
     "cant_follow_yourself": "Bạn không thể theo dõi chính mình.",
     "already_following_user": "Bạn đã theo dõi người dùng này.",
+    "already_blocked_user": "Bạn đã chặn người dùng này.",
     "user_followed_successfully": "Bạn đã theo dõi người dùng thành công.",
     "not_following_user": "Bạn không theo dõi người dùng này.",
     "must_unblock_before_follow": "Bạn phải bỏ chặn người dùng này trước khi theo dõi họ.",
@@ -39,5 +40,8 @@
     "target_id_required": "Target ID là bắt buộc.",
     "target_id_invalid": "Target ID không hợp lệ.",
     "user_relationship_retrieved": "Mối quan hệ người dùng đã được lấy thành công.",
+    "user_blocked_successfully": "Bạn đã chặn người dùng thành công.",
+    "must_follow_or_restrict_before_block": "Bạn phải theo dõi hoặc hạn chế người dùng này trước khi chặn họ.",
+    "cant_block_yourself": "Bạn không thể chặn chính mình.",
     "email_exists": "Email đã tồn tại."
 }

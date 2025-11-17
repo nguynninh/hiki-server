@@ -32,6 +32,7 @@
     "follower_users_listed": "关注您的用户列表已成功获取。",
     "cant_follow_yourself": "您不能关注自己。",
     "already_following_user": "您已关注此用户。",
+    "already_blocked_user": "您已屏蔽此用户。",
     "user_followed_successfully": "您已成功关注该用户。",
     "not_following_user": "您未关注此用户。",
     "must_unblock_before_follow": "您必须先解除屏蔽此用户才能关注他们。",
@@ -39,5 +40,8 @@
     "target_id_required": "Target ID是必填项。",
     "target_id_invalid": "Target ID无效。",
     "user_relationship_retrieved": "用户关系已成功获取。",
+    "user_blocked_successfully": "您已成功屏蔽该用户。",
+    "must_follow_or_restrict_before_block": "您必须先关注或限制此用户才能屏蔽他们。",
+    "cant_block_yourself": "您不能屏蔽自己。",
     "email_exists": "电子邮件已存在。"
 }
