@@ -2,26 +2,18 @@ import { Router } from 'express';
 import multer from 'multer';
 import {
     changePassword,
-    createNewFollow,
     createUser,
-    getListFollowUsers,
     getListUsers,
-    getListUsersFollow,
     getMe,
     getUser,
-    getUserRelationship,
-    handleUnfollow,
     uploadAvatar,
     verifyUser,
 } from '../controllers/userController';
 import { 
     validateAvatar,
     validateChangePassword,
-    validateCreateFollow,
     validateCreateUser,
     validateGetUser,
-    validateGetUserRelationship,
-    validateUnfollow,
     validateVerifyUser,
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
@@ -56,20 +48,6 @@ router.get(
 );
 
 router.get(
-    "/following",
-    authenticate,
-    authorize('USER_LIST_FOLLOWING'),
-    getListFollowUsers,
-);
-
-router.get(
-    "/followers",
-    authenticate,
-    authorize('USER_LIST_FOLLOWERS'),
-    getListUsersFollow,
-);
-
-router.get(
     '/:id',
     authenticate,
     authorize('USER_VIEW'),
@@ -92,30 +70,6 @@ router.post(
     upload.single('avatar'),
     validateAvatar,
     uploadAvatar,
-);
-
-router.get(
-    "/:targetId/relationship", 
-    authenticate,
-    authorize('USER_VIEW_RELATIONSHIP'),
-    validateGetUserRelationship,
-    getUserRelationship,
-);
-
-router.post(
-    "/:targetId/follow",
-    authenticate,
-    authorize('USER_CREATE_FOLLOW'),
-    validateCreateFollow,
-    createNewFollow,
-);
-
-router.delete(
-    "/:targetId/follow",
-    authenticate,
-    authorize('USER_UNFOLLOW'),
-    validateUnfollow,
-    handleUnfollow,
 );
 
 export default router;
