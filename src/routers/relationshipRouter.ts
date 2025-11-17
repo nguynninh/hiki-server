@@ -5,12 +5,14 @@ import {
     getListFollowUsers,
     getListUsersFollow,
     getUserRelationship,
+    handleUnBlock,
     handleUnfollow,
 } from '../controllers/relationshipController';
 import {
     validateCreateBlock,
     validateCreateFollow,
     validateGetUserRelationship,
+    validateUnBlock,
     validateUnfollow,
 } from '../validation/validateRelationship';
 import { authenticate } from '../middlewares/auth';
@@ -62,6 +64,14 @@ router.post(
     authorize('USER_CREATE_BLOCK'),
     validateCreateBlock,
     createNewBlock,
+);
+
+router.delete(
+    "/:targetId/block",
+    authenticate,
+    authorize('USER_UNBLOCK'),
+    validateUnBlock,
+    handleUnBlock,
 );
 
 export default router;

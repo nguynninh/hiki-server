@@ -312,6 +312,30 @@ const createNewBlock = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const handleUnBlock = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    const existingRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: userId,
+            target_id: targetId,
+            type: keyUserRelationshipType.BLOCKED,
+        }
+    });
+
+    if (!existingRelationship) {
+        throw new NotFoundError(req.t('user:not_blocked_user'));
+    }
+
+    await existingRelationship.destroy();
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_unblocked_successfully'),
+    });
+});
+
 export {
     getListFollowUsers,
     getListUsersFollow,
@@ -319,4 +343,5 @@ export {
     handleUnfollow,
     getUserRelationship,
     createNewBlock,
+    handleUnBlock,
 };
