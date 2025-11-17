@@ -323,6 +323,7 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: user.avatar ? await getFileUrl(user.avatar) : null,
             },
             public_url: publicUrl,
         }
