@@ -62,14 +62,15 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     });
     const permissionNames = Array.from(allPermissions);
 
+    const userData = user.toJSON() as any;
+    delete userData.password;
+    delete userData.roles;
+
     return successResponse(res, {
         code: 200,
         message: req.t('auth:login_successful'),
         data: {
-            user: {
-                ...user.toJSON(),
-                password: undefined,
-            },
+            user: userData,
             auth: {
                 access_token: await getAccesstoken((user as any).id, roleNames, permissionNames, false),
                 refresh_token: await getAccesstoken((user as any).id, roleNames, permissionNames, true),
@@ -142,14 +143,15 @@ const loginSocial = asyncHandler(async (req: Request, res: Response) => {
     });
     const permissionNames = Array.from(allPermissions);
 
+    const userData = user.toJSON() as any;
+    delete userData.password;
+    delete userData.roles;
+
     return successResponse(res, {
         code: 201,
         message: req.t('auth:login_successful'),
         data: {
-            user: {
-                ...user.toJSON(),
-                password: undefined,
-            },
+            user: userData,
             auth: {
                 access_token: await getAccesstoken((user as any).id, roleNames, permissionNames, false),
                 refresh_token: await getAccesstoken((user as any).id, roleNames, permissionNames, true),
@@ -202,14 +204,15 @@ const refreshToken = asyncHandler(async (req: Request, res: Response) => {
     });
     const permissionNames = Array.from(allPermissions);
 
+    const userData = user.toJSON() as any;
+    delete userData.password;
+    delete userData.roles;
+
     return successResponse(res, {
         code: 200,
         message: req.t('auth:token_refreshed'),
         data: {
-            user: {
-                ...user.toJSON(),
-                password: undefined,
-            },
+            user: userData,
             auth: {
                 access_token: await getAccesstoken((user as any).id, roleNames, permissionNames, false),
                 refresh_token: await getAccesstoken((user as any).id, roleNames, permissionNames, true),
