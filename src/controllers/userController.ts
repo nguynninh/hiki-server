@@ -524,7 +524,9 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
 
     relationships.forEach((rel: any) => {
         if (rel.user_id === userId && rel.target_id === targetId) {
-            if (rel.type === keyUserRelationshipType.FOLLOW) {
+            if (rel.type === keyUserRelationshipType.FOLLOW 
+                || rel.type === keyUserRelationshipType.RESTRICTION
+                || rel.type === keyUserRelationshipType.BLOCKED) {
                 result.follow.i_follow = true;
             } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
                 result.restriction.i_restrict = true;
@@ -532,7 +534,9 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
                 result.block.i_blocked = true;
             }
         } else if (rel.user_id === targetId && rel.target_id === userId) {
-            if (rel.type === keyUserRelationshipType.FOLLOW) {
+            if (rel.type === keyUserRelationshipType.FOLLOW 
+                || rel.type === keyUserRelationshipType.RESTRICTION
+                || rel.type === keyUserRelationshipType.BLOCKED) {
                 result.follow.follow_me = true;
             } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
                 result.restriction.restrict_me = true;
