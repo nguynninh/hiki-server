@@ -28,18 +28,6 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 
     const user = await UserModel.findOne({
         where: { email },
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            include: [{
-                model: PermissionModel,
-                as: 'permissions',
-                attributes: ['id', 'name'],
-                through: { attributes: [] }
-            }]
-        }]
     });
 
     if (!user)
