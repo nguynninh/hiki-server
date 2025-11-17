@@ -28,5 +28,6 @@
     "avatar_too_large": "Avatar file size exceeds {size}.",
     "avatar_uploaded": "Avatar has been uploaded successfully.",
     "otp_already_sent": "OTP code has already been sent. Please try again in a few minutes.",
+    "followed_users_listed": "Followed users list has been retrieved successfully.",
     "email_exists": "Email already exists."
 }

@@ -28,5 +28,6 @@
     "avatar_too_large": "Kích thước tệp ảnh đại diện vượt quá {size}.",
     "avatar_uploaded": "Ảnh đại diện đã được tải lên thành công.",
     "otp_already_sent": "Mã OTP đã được gửi. Vui lòng thử lại sau vài phút.",
+    "followed_users_listed": "Danh sách người theo dõi đã được lấy thành công.",
     "email_exists": "Email đã tồn tại."
 }

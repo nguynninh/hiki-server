@@ -3,6 +3,7 @@ import {
     RoleModel,
     PermissionModel,
     FileMgmtModel,
+    UserRelationship,
 } from './associations';
 
 export {
@@ -10,4 +11,5 @@ export {
     RoleModel,
     PermissionModel,
     FileMgmtModel,
+    UserRelationship,
 };

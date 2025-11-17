@@ -28,5 +28,6 @@
     "avatar_too_large": "头像文件大小超过{size}。",
     "avatar_uploaded": "头像已成功上传。",
     "otp_already_sent": "OTP代码已发送。请稍后几分钟再试。",
+    "followed_users_listed": "关注的用户列表已成功获取。",
     "email_exists": "电子邮件已存在。"
 }

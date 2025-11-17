@@ -1,4 +1,4 @@
-import { UserModel, RoleModel, PermissionModel } from "../models";
+import { UserModel, RoleModel, PermissionModel, UserRelationship } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -14,6 +14,8 @@ import { deleteFile, getFileUrl, uploadImage } from "../services/fileService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
+import Pagination from "../dto/Pagination";
+import keyUserRelationshipType from "../constants/keyUserRelationshipType";
 
 dotenv.config();
 
@@ -258,12 +260,11 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
                 ...user.toJSON(),
                 password: undefined,
             })),
-            pagination: {
-                total: filteredTotal,
-                page: pageNumber,
-                limit: limitNumber,
-                totalPages: Math.ceil(filteredTotal / limitNumber),
-            }
+            paginations: Pagination(
+                pageNumber,
+                limitNumber,
+                filteredTotal,
+            ),
         }
     });
 });
@@ -330,6 +331,52 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getListFollowUsers = asyncHandler(async (req: Request, res: Response) => {
+    const {
+        page,
+        limit,
+    } = req.query;
+
+    const userId = (req as any).user.sub;
+
+    const pageNumber = parseInt(page as string, 10) || 1;
+    const limitNumber = parseInt(limit as string, 10) || 10;
+    const offset = (pageNumber - 1) * limitNumber;
+
+    const { rows: relationships, count: total } = await UserRelationship.findAndCountAll({
+        where: {
+            user_id: userId,
+            type: keyUserRelationshipType.FOLLOW,
+        },
+        limit: limitNumber,
+        offset,
+        order: [['created_at', 'DESC']],
+    });
+
+    const followedUserIds = relationships.map((rel: any) => rel.target_id);
+
+    const users = await UserModel.findAll({
+        where: {
+            id: followedUserIds,
+        },
+    });
+
+    return successResponse(res, {
+        message: req.t('user:followed_users_listed'),
+        data: {
+            users: users.map(user => ({
+                ...user.toJSON(),
+                password: undefined,
+            })),
+            paginations: Pagination(
+                pageNumber,
+                limitNumber,
+                total,
+            ),
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -338,4 +385,5 @@ export {
     getListUsers,
     uploadAvatar,
     getMe,
+    getListFollowUsers,
 };

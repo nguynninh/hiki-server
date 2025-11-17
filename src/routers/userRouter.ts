@@ -3,6 +3,7 @@ import multer from 'multer';
 import {
     changePassword,
     createUser,
+    getListFollowUsers,
     getListUsers,
     getMe,
     getUser,
@@ -45,6 +46,13 @@ router.get(
     authenticate,
     authorize('USER_LIST'),
     getListUsers,
+);
+
+router.get(
+    "/following",
+    authenticate,
+    authorize('USER_LIST_FOLLOWING'),
+    getListFollowUsers,
 );
 
 router.get(
