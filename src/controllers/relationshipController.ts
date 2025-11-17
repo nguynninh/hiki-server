@@ -233,23 +233,21 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
         if (rel.user_id === userId && rel.target_id === targetId) {
             if (rel.type === keyUserRelationshipType.FOLLOW 
                 || rel.type === keyUserRelationshipType.RESTRICTION
-                || rel.type === keyUserRelationshipType.BLOCKED) {
+                || rel.type === keyUserRelationshipType.BLOCKED)
                 result.follow.i_follow = true;
-            } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
+            if (rel.type === keyUserRelationshipType.RESTRICTION)
                 result.restriction.i_restrict = true;
-            } else if (rel.type === keyUserRelationshipType.BLOCKED) {
+            else if (rel.type === keyUserRelationshipType.BLOCKED)
                 result.block.i_blocked = true;
-            }
         } else if (rel.user_id === targetId && rel.target_id === userId) {
             if (rel.type === keyUserRelationshipType.FOLLOW 
                 || rel.type === keyUserRelationshipType.RESTRICTION
-                || rel.type === keyUserRelationshipType.BLOCKED) {
+                || rel.type === keyUserRelationshipType.BLOCKED)
                 result.follow.follow_me = true;
-            } else if (rel.type === keyUserRelationshipType.RESTRICTION) {
+            if (rel.type === keyUserRelationshipType.RESTRICTION)
                 result.restriction.restrict_me = true;
-            } else if (rel.type === keyUserRelationshipType.BLOCKED) {
+            else if (rel.type === keyUserRelationshipType.BLOCKED)
                 result.block.blocked_me = true;
-            }
         }
     });
 
@@ -262,10 +260,51 @@ const getUserRelationship = asyncHandler(async (req: Request, res: Response) => 
     });
 });
 
+const createNewBlock = asyncHandler(async (req: Request, res: Response) => {
+    const { targetId } = req.params;
+    const userId = (req as any).user.sub;
+
+    if (userId === targetId) {
+        throw new ValidationError(req.t('user:cant_block_yourself'));
+    }
+
+    const targetUser = await UserModel.findByPk(targetId);
+    if (!targetUser) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    const existingRelationship = await UserRelationship.findOne({
+        where: {
+            user_id: userId,
+            target_id: targetId,
+        }
+    });
+
+    if (existingRelationship) {
+        const relationType = (existingRelationship as any).type;
+        
+        if (relationType === keyUserRelationshipType.BLOCKED) {
+            throw new ValidationError(req.t('user:already_blocked_user'));
+        }
+    }
+
+    await UserRelationship.create({
+        user_id: userId,
+        target_id: targetId,
+        type: keyUserRelationshipType.BLOCKED,
+    });
+
+    return successResponse(res, {
+        code: 201,
+        message: req.t('user:user_blocked_successfully'),
+    });
+});
+
 export {
     getListFollowUsers,
     getListUsersFollow,
     createNewFollow,
     handleUnfollow,
     getUserRelationship,
+    createNewBlock,
 };

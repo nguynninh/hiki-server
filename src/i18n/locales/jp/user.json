@@ -32,6 +32,7 @@
     "follower_users_listed": "フォロワーリストが正常に取得されました。",
     "cant_follow_yourself": "自分自身をフォローすることはできません。",
     "already_following_user": "このユーザーは既にフォローしています。",
+    "already_blocked_user": "このユーザーは既にブロックしています。",
     "user_followed_successfully": "ユーザーのフォローに成功しました。",
     "not_following_user": "このユーザーをフォローしていません。",
     "must_unblock_before_follow": "フォローする前にこのユーザーのブロックを解除する必要があります。",
@@ -39,5 +40,8 @@
     "target_id_required": "Target IDは必須です。",
     "target_id_invalid": "Target IDが無効です。",
     "user_relationship_retrieved": "ユーザー関係が正常に取得されました。",
+    "user_blocked_successfully": "ユーザーのブロックに成功しました。",
+    "must_follow_or_restrict_before_block": "このユーザーをブロックする前にフォローまたは制限する必要があります。",
+    "cant_block_yourself": "自分自身をブロックすることはできません。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

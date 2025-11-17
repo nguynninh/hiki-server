@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+    createNewBlock,
     createNewFollow,
     getListFollowUsers,
     getListUsersFollow,
@@ -7,6 +8,7 @@ import {
     handleUnfollow,
 } from '../controllers/relationshipController';
 import {
+    validateCreateBlock,
     validateCreateFollow,
     validateGetUserRelationship,
     validateUnfollow,
@@ -52,6 +54,14 @@ router.delete(
     authorize('USER_UNFOLLOW'),
     validateUnfollow,
     handleUnfollow,
+);
+
+router.post(
+    "/:targetId/block",
+    authenticate,
+    authorize('USER_CREATE_BLOCK'),
+    validateCreateBlock,
+    createNewBlock,
 );
 
 export default router;

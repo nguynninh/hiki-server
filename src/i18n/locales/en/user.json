@@ -32,6 +32,7 @@
     "follower_users_listed": "List of your followers has been retrieved successfully.",
     "cant_follow_yourself": "You cannot follow yourself.",
     "already_following_user": "You are already following this user.",
+    "already_blocked_user": "You have already blocked this user.",
     "user_followed_successfully": "You have successfully followed the user.",
     "not_following_user": "You are not following this user.",
     "must_unblock_before_follow": "You must unblock this user before following them.",
@@ -39,5 +40,8 @@
     "target_id_required": "Target ID is required.",
     "target_id_invalid": "Target ID is invalid.",
     "user_relationship_retrieved": "User relationship has been retrieved successfully.",
+    "user_blocked_successfully": "You have successfully blocked the user.",
+    "must_follow_or_restrict_before_block": "You must follow or restrict this user before blocking them.",
+    "cant_block_yourself": "You cannot block yourself.",
     "email_exists": "Email already exists."
 }
