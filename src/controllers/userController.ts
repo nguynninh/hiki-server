@@ -232,38 +232,19 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         limit: limitNumber,
         offset,
         order: [['created_at', 'DESC']],
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            where: {
-                name: {
-                    [require('sequelize').Op.ne]: roles.SUPER_ADMIN
-                }
-            },
-            required: false
-        }]
     });
-
-    const filteredUsers = users.filter(user => {
-        const userRoles = (user as any).roles || [];
-        return !userRoles.some((role: any) => role.name === roles.SUPER_ADMIN);
-    });
-
-    const filteredTotal = total - (users.length - filteredUsers.length);
 
     return successResponse(res, {
         message: req.t('user:users_listed'),
         data: {
-            users: filteredUsers.map(user => ({
+            users: users.map(user => ({
                 ...user.toJSON(),
                 password: undefined,
             })),
             paginations: Pagination(
                 pageNumber,
                 limitNumber,
-                filteredTotal,
+                total,
             ),
         }
     });
