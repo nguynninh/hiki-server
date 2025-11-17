@@ -72,7 +72,7 @@ const getListUsersFollow = asyncHandler(async (req: Request, res: Response) => {
     const { rows: relationships, count: total } = await UserRelationship.findAndCountAll({
         where: {
             target_id: userId,
-            type: keyUserRelationshipType.FOLLOW,
+            type: keyUserRelationshipType.FOLLOW || keyUserRelationshipType.RESTRICTION,
         },
         limit: limitNumber,
         offset,
