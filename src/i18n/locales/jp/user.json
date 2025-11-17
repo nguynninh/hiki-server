@@ -28,6 +28,7 @@
     "avatar_too_large": "アバターファイルのサイズが{size}を超えています。",
     "avatar_uploaded": "アバターが正常にアップロードされました。",
     "otp_already_sent": "OTPコードは既に送信されています。数分後にもう一度お試しください。",
-    "followed_users_listed": "フォローしているユーザーのリストが正常に取得されました。",
+    "followed_users_listed": "フォロー中のユーザーリストが正常に取得されました。",
+    "follower_users_listed": "フォロワーリストが正常に取得されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

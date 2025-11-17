@@ -377,6 +377,52 @@ const getListFollowUsers = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const getListUsersFollow = asyncHandler(async (req: Request, res: Response) => {
+    const {
+        page,
+        limit,
+    } = req.query;
+
+    const userId = (req as any).user.sub;
+
+    const pageNumber = parseInt(page as string, 10) || 1;
+    const limitNumber = parseInt(limit as string, 10) || 10;
+    const offset = (pageNumber - 1) * limitNumber;
+
+    const { rows: relationships, count: total } = await UserRelationship.findAndCountAll({
+        where: {
+            target_id: userId,
+            type: keyUserRelationshipType.FOLLOW,
+        },
+        limit: limitNumber,
+        offset,
+        order: [['created_at', 'DESC']],
+    });
+
+    const followerUserIds = relationships.map((rel: any) => rel.user_id);
+
+    const users = await UserModel.findAll({
+        where: {
+            id: followerUserIds,
+        },
+    });
+
+    return successResponse(res, {
+        message: req.t('user:follower_users_listed'),
+        data: {
+            users: users.map(user => ({
+                ...user.toJSON(),
+                password: undefined,
+            })),
+            paginations: Pagination(
+                pageNumber,
+                limitNumber,
+                total,
+            ),
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -386,4 +432,5 @@ export {
     uploadAvatar,
     getMe,
     getListFollowUsers,
+    getListUsersFollow,
 };
