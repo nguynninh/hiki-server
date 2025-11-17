@@ -23,7 +23,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
-    '/',
+    ['/','/registration'],
     validateCreateUser,
     createUser,
 );
@@ -41,7 +41,7 @@ router.get(
 );
 
 router.get(
-    '/',
+    ['/', "/search"],
     authenticate,
     authorize('USER_LIST'),
     getListUsers,

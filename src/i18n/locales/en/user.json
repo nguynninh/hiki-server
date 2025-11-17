@@ -27,5 +27,6 @@
     "avatar_invalid_type": "Invalid avatar file type.",
     "avatar_too_large": "Avatar file size exceeds {size}.",
     "avatar_uploaded": "Avatar has been uploaded successfully.",
+    "otp_already_sent": "OTP code has already been sent. Please try again in a few minutes.",
     "email_exists": "Email already exists."
 }

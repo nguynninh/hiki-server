@@ -10,7 +10,7 @@ import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/
 import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
-import { deleteFile, uploadImage } from "../services/fileService";
+import { deleteFile, getFileUrl, uploadImage } from "../services/fileService";
 import generateCode from "../utils/generateCode";
 import { parseUserAgent } from "../utils/parseUserAgent";
 import roles from "../constants/appRoles";
@@ -97,7 +97,7 @@ const createUser = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
-            }
+            },
         }
     });
 });
@@ -109,11 +109,17 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
     if (user)
         throw new ValidationError(req.t('user:email_already_in_use'));
 
+    const rd_verify_user = redisKey.OTP_CREATE_ACCOUNT(email);
+    
+    const existingOTP = await redisClient.get(rd_verify_user);
+    if (existingOTP) {
+        throw new ValidationError(req.t("user:otp_already_sent"));
+    }
+
     const code = generateCode(6);
 
     const hashedCode = await bcrypt.hash(code, 10);
 
-    const rd_verify_user = redisKey.OTP_CREATE_ACCOUNT(email);
     await redisClient.setEx(
         rd_verify_user,
         VERIFY_CREATE_WINDOW_SECONDS,
@@ -151,7 +157,7 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
 const getMe = asyncHandler(async (req: Request, res: Response) => {
     const userId = (req as any).user.sub;
 
-    const user = await UserModel.findOne({
+    const user: any = await UserModel.findOne({
         where: { id: userId },
         include: [{
             model: RoleModel,
@@ -170,6 +176,8 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
 
+    const avatarUrl = user.avatar ? await getFileUrl(user.avatar) : null;
+
     return successResponse(res, {
         code: 200,
         message: req.t('user:user_retrieved'),
@@ -177,6 +185,7 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: avatarUrl,
             }
         }
     });
@@ -314,6 +323,7 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
+                avatar: user.avatar ? await getFileUrl(user.avatar) : null,
             },
             public_url: publicUrl,
         }

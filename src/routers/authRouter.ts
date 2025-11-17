@@ -46,4 +46,12 @@ router.post(
     resetPassword,
 );
 
+router.post('/verification', (req, res) => {
+    res.redirect(307, '/api/v1/users/verify');
+});
+
+router.post("/registration", (req, res) => {
+    res.redirect(307, '/api/v1/users/registration');
+});
+
 export default router;
