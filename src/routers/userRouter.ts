@@ -97,16 +97,4 @@ router.post(
     createNewFollow,
 );
 
-router.get(
-    "/:targetId/follow",
-    authenticate,
-    authorize('USER_VIEW_FOLLOW'),
-);
-
-router.delete(
-    "/:targetId/follow",
-    authenticate,
-    authorize('USER_UNFOLLOW'),
-);
-
 export default router;
