@@ -30,5 +30,11 @@
     "otp_already_sent": "Mã OTP đã được gửi. Vui lòng thử lại sau vài phút.",
     "followed_users_listed": "Danh sách người bạn đang theo dõi đã được lấy thành công.",
     "follower_users_listed": "Danh sách người theo dõi bạn đã được lấy thành công.",
+    "cant_follow_yourself": "Bạn không thể theo dõi chính mình.",
+    "already_following_user": "Bạn đã theo dõi người dùng này.",
+    "user_followed_successfully": "Bạn đã theo dõi người dùng thành công.",
+    "not_following_user": "Bạn không theo dõi người dùng này.",
+    "must_unblock_before_follow": "Bạn phải bỏ chặn người dùng này trước khi theo dõi họ.",
+    "user_unfollowed_successfully": "Bạn đã hủy theo dõi người dùng thành công.",
     "email_exists": "Email đã tồn tại."
 }

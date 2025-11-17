@@ -30,5 +30,11 @@
     "otp_already_sent": "OTP code has already been sent. Please try again in a few minutes.",
     "followed_users_listed": "List of users you are following has been retrieved successfully.",
     "follower_users_listed": "List of your followers has been retrieved successfully.",
+    "cant_follow_yourself": "You cannot follow yourself.",
+    "already_following_user": "You are already following this user.",
+    "user_followed_successfully": "You have successfully followed the user.",
+    "not_following_user": "You are not following this user.",
+    "must_unblock_before_follow": "You must unblock this user before following them.",
+    "user_unfollowed_successfully": "You have successfully unfollowed the user.",
     "email_exists": "Email already exists."
 }

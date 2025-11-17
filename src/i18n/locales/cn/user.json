@@ -30,5 +30,11 @@
     "otp_already_sent": "OTP代码已发送。请稍后几分钟再试。",
     "followed_users_listed": "您关注的用户列表已成功获取。",
     "follower_users_listed": "关注您的用户列表已成功获取。",
+    "cant_follow_yourself": "您不能关注自己。",
+    "already_following_user": "您已关注此用户。",
+    "user_followed_successfully": "您已成功关注该用户。",
+    "not_following_user": "您未关注此用户。",
+    "must_unblock_before_follow": "您必须先解除屏蔽此用户才能关注他们。",
+    "user_unfollowed_successfully": "您已成功取消关注该用户。",
     "email_exists": "电子邮件已存在。"
 }

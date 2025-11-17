@@ -9,6 +9,7 @@ import {
     getListUsersFollow,
     getMe,
     getUser,
+    handleUnfollow,
     uploadAvatar,
     verifyUser,
 } from '../controllers/userController';
@@ -21,7 +22,6 @@ import {
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
-import { get } from 'http';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -95,6 +95,13 @@ router.post(
     authenticate,
     authorize('USER_CREATE_FOLLOW'),
     createNewFollow,
+);
+
+router.delete(
+    "/:targetId/follow",
+    authenticate,
+    authorize('USER_UNFOLLOW'),
+    handleUnfollow,
 );
 
 export default router;
