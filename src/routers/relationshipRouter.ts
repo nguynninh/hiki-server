@@ -23,21 +23,21 @@ const router = Router();
 router.get(
     "/following",
     authenticate,
-    authorize('USER_LIST_FOLLOWING'),
+    authorize('RELATIONSHIP_LIST_FOLLOWING'),
     getListFollowUsers,
 );
 
 router.get(
     "/followers",
     authenticate,
-    authorize('USER_LIST_FOLLOWERS'),
+    authorize('RELATIONSHIP_LIST_FOLLOWERS'),
     getListUsersFollow,
 );
 
 router.get(
     "/:targetId", 
     authenticate,
-    authorize('USER_VIEW_RELATIONSHIP'),
+    authorize('RELATIONSHIP_VIEW'),
     validateGetUserRelationship,
     getUserRelationship,
 );
@@ -45,7 +45,7 @@ router.get(
 router.post(
     "/:targetId/follow",
     authenticate,
-    authorize('USER_CREATE_FOLLOW'),
+    authorize('RELATIONSHIP_FOLLOW'),
     validateCreateFollow,
     createNewFollow,
 );
@@ -53,7 +53,7 @@ router.post(
 router.delete(
     "/:targetId/follow",
     authenticate,
-    authorize('USER_UNFOLLOW'),
+    authorize('RELATIONSHIP_UNFOLLOW'),
     validateUnfollow,
     handleUnfollow,
 );
@@ -61,7 +61,7 @@ router.delete(
 router.post(
     "/:targetId/block",
     authenticate,
-    authorize('USER_CREATE_BLOCK'),
+    authorize('RELATIONSHIP_BLOCK'),
     validateCreateBlock,
     createNewBlock,
 );
@@ -69,7 +69,7 @@ router.post(
 router.delete(
     "/:targetId/block",
     authenticate,
-    authorize('USER_UNBLOCK'),
+    authorize('RELATIONSHIP_UNBLOCK'),
     validateUnBlock,
     handleUnBlock,
 );
