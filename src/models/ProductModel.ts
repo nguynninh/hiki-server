@@ -23,6 +23,10 @@ const ProductModel = sequelize.define('products', {
         type: DataTypes.UUID,
         allowNull: true,
     },
+    seller_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

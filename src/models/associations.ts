@@ -93,6 +93,16 @@ ProductModel.belongsTo(CategoryModel, {
     as: 'category',
 });
 
+UserModel.hasMany(ProductModel, {
+    foreignKey: 'seller_id',
+    as: 'products',
+});
+
+ProductModel.belongsTo(UserModel, {
+    foreignKey: 'seller_id',
+    as: 'seller',
+});
+
 AttributeModel.hasMany(AttributeValueModel, {
     foreignKey: 'attribute_id',
     as: 'values',
