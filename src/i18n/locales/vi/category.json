@@ -1,0 +1,11 @@
+{
+  "name_required": "Tên danh mục là bắt buộc",
+  "name_max_length": "Tên danh mục không được vượt quá {{max}} ký tự",
+  "slug_required": "Slug là bắt buộc",
+  "slug_max_length": "Slug không được vượt quá {{max}} ký tự",
+  "slug_invalid_format": "Slug chỉ được chứa chữ thường, số và dấu gạch ngang",
+  "slug_exists": "Slug này đã tồn tại",
+  "parent_id_invalid": "ID danh mục cha không hợp lệ",
+  "parent_not_found": "Danh mục cha không tồn tại",
+  "category_created": "Tạo danh mục thành công"
+}

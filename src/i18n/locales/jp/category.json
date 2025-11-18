@@ -1,0 +1,11 @@
+{
+  "name_required": "カテゴリ名は必須です",
+  "name_max_length": "カテゴリ名は{{max}}文字を超えることはできません",
+  "slug_required": "スラッグは必須です",
+  "slug_max_length": "スラッグは{{max}}文字を超えることはできません",
+  "slug_invalid_format": "スラッグには小文字、数字、ハイフンのみ使用できます",
+  "slug_exists": "このスラッグは既に存在します",
+  "parent_id_invalid": "親カテゴリIDが無効です",
+  "parent_not_found": "親カテゴリが見つかりません",
+  "category_created": "カテゴリの作成に成功しました"
+}
