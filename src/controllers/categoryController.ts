@@ -133,6 +133,7 @@ export const deleteCategories = asyncHandler(async (req: Request, res: Response)
         }
 
         if ((category as any).deleted_at !== null) {
+            await deleteFile((category as any).image);
             await category.destroy({ force: true });
             results.alreadyHardDeleted.push({
                 id: (category as any).id,
@@ -360,6 +361,7 @@ export const hardDeleteCategory = asyncHandler(async (req: Request, res: Respons
         throw new ValidationError(req.t('category:has_children'));
     }
 
+    await deleteFile((category as any).image);
     await category.destroy({ force: true });
 
     return successResponse(res, {
