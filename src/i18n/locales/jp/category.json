@@ -7,6 +7,11 @@
   "slug_exists": "このスラッグは既に存在します",
   "parent_id_invalid": "親カテゴリIDが無効です",
   "parent_not_found": "親カテゴリが見つかりません",
+  "id_invalid": "カテゴリIDが無効です",
   "category_created": "カテゴリの作成に成功しました",
-  "categories_fetched": "カテゴリリストの取得に成功しました"
+  "categories_fetched": "カテゴリリストの取得に成功しました",
+  "ids_required": "IDリストは必須です",
+  "ids_must_be_array": "IDは配列である必要があります",
+  "ids_min_length": "少なくとも1つのIDが必要です",
+  "bulk_delete_completed": "一括削除完了：{{success}}/{{total}}成功"
 }

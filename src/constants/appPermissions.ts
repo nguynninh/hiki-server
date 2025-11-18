@@ -14,6 +14,7 @@ const permissionsList = [
   "PERMISSION_VIEW",
   "CATEGORY_CREATE",
   "CATEGORY_LIST",
+  "CATEGORY_DELETE",
 ];
 
 export default permissionsList;

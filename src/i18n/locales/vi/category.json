@@ -7,6 +7,11 @@
   "slug_exists": "Slug này đã tồn tại",
   "parent_id_invalid": "ID danh mục cha không hợp lệ",
   "parent_not_found": "Danh mục cha không tồn tại",
+  "id_invalid": "ID danh mục không hợp lệ",
   "category_created": "Tạo danh mục thành công",
-  "categories_fetched": "Lấy danh sách danh mục thành công"
+  "categories_fetched": "Lấy danh sách danh mục thành công",
+  "ids_required": "Danh sách ID là bắt buộc",
+  "ids_must_be_array": "Danh sách ID phải là mảng",
+  "ids_min_length": "Phải có ít nhất 1 ID",
+  "bulk_delete_completed": "Hoàn thành xóa: {{success}}/{{total}} thành công"
 }
