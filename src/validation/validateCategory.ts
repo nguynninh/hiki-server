@@ -166,3 +166,42 @@ export const validateRestoreCategory = (req: Request, res: Response, next: NextF
 
     next();
 };
+
+export const validateUpdateCategory = (req: Request, res: Response, next: NextFunction) => {
+    const categorySchema = Joi.object({
+        name: Joi.string()
+            .max(100)
+            .optional()
+            .messages({
+                'string.empty': req.t('category:name_required'),
+                'string.max': req.t('category:name_max_length', { max: 100 }),
+            }),
+        slug: Joi.string()
+            .max(100)
+            .pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+            .optional()
+            .messages({
+                'string.max': req.t('category:slug_max_length', { max: 100 }),
+                'string.pattern.base': req.t('category:slug_invalid_format'),
+            }),
+        parent_id: Joi.string()
+            .uuid()
+            .optional()
+            .allow(null)
+            .messages({
+                'string.guid': req.t('category:parent_id_invalid'),
+            }),
+    });
+
+    const { error } = categorySchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
