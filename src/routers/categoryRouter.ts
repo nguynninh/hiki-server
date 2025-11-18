@@ -3,12 +3,14 @@ import {
     createCategory,
     getListCategories,
     getCategory,
+    hardDeleteCategory,
     softdeleteCategory,
     deleteCategories,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
     validateGetCategory,
+    validateHardDeleteCategory,
     validateSoftDeleteCategory,
     validateDeleteCategories,
 } from '../validation/validateCategory';
@@ -54,6 +56,14 @@ router.delete(
     authorize('CATEGORY_SOFT_DELETE'),
     validateSoftDeleteCategory,
     softdeleteCategory,
+);
+
+router.delete(
+    '/:id/hard',
+    authenticate,
+    authorize('CATEGORY_HARD_DELETE'),
+    validateHardDeleteCategory,
+    hardDeleteCategory,
 );
 
 export default router;

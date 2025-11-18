@@ -15,6 +15,8 @@
   "category_deleted": "Category deleted successfully",
   "category_not_found": "Category not found",
   "has_children": "Cannot delete category with child categories",
+  "category_hard_deleted": "Category permanently deleted successfully",
+  "must_soft_delete_first": "Category must be soft deleted before permanent deletion",
   "ids_required": "IDs list is required",
   "ids_must_be_array": "IDs must be an array",
   "ids_min_length": "At least 1 ID is required",

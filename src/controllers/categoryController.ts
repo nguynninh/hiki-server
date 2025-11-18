@@ -229,3 +229,37 @@ export const softdeleteCategory = asyncHandler(async (req: Request, res: Respons
         data: null,
     });
 });
+
+export const hardDeleteCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByPk(id, {
+        paranoid: false,
+        include: [
+            {
+                model: CategoryModel,
+                as: 'children',
+                paranoid: false,
+            }
+        ],
+    });
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    if ((category as any).deleted_at === null) {
+        throw new ValidationError(req.t('category:must_soft_delete_first'));
+    }
+
+    if ((category as any).children && (category as any).children.length > 0) {
+        throw new ValidationError(req.t('category:has_children'));
+    }
+
+    await category.destroy({ force: true });
+
+    return successResponse(res, {
+        message: req.t('category:category_hard_deleted'),
+        data: null,
+    });
+});
