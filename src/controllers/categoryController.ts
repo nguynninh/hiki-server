@@ -187,7 +187,8 @@ export const uploadCategoryAvatar = asyncHandler(async (req: Request, res: Respo
         throw new NotFoundError(req.t('category:category_not_found'));
     }
 
-    const { publicUrl } = await uploadImage((req as any).user.id, file);
+    const userId = req.user?.sub;
+    const { publicUrl } = await uploadImage(userId, file);
 
     await category.update({
         image: publicUrl,
