@@ -43,3 +43,30 @@ export const validateCreateCategory = (req: Request, res: Response, next: NextFu
 
     next();
 };
+
+export const validateDeleteCategories = (req: Request, res: Response, next: NextFunction) => {
+    const bodySchema = Joi.object({
+        ids: Joi.array()
+            .items(Joi.string().uuid())
+            .min(1)
+            .required()
+            .messages({
+                'array.base': req.t('category:ids_must_be_array'),
+                'array.min': req.t('category:ids_min_length'),
+                'string.guid': req.t('category:id_invalid'),
+                'any.required': req.t('category:ids_required'),
+            }),
+    });
+
+    const { error } = bodySchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};

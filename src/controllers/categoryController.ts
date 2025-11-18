@@ -94,3 +94,80 @@ export const getListCategories = asyncHandler(async (req: Request, res: Response
         }
     });
 });
+
+export const deleteCategories = asyncHandler(async (req: Request, res: Response) => {
+    const { ids } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        throw new ValidationError(req.t('category:ids_required'));
+    }
+
+    const results = {
+        success: [] as any[],
+        notFound: [] as string[],
+        hasChildren: [] as any[],
+        alreadyHardDeleted: [] as any[],
+    };
+
+    for (const id of ids) {
+        const category = await CategoryModel.findByPk(id, {
+            paranoid: false,
+            include: [
+                {
+                    model: CategoryModel,
+                    as: 'children',
+                }
+            ],
+        });
+
+        if (!category) {
+            results.notFound.push(id);
+            continue;
+        }
+
+        if ((category as any).deleted_at !== null) {
+            await category.destroy({ force: true });
+            results.alreadyHardDeleted.push({
+                id: (category as any).id,
+                name: (category as any).name,
+                deletedAt: (category as any).deleted_at,
+            });
+            continue;
+        }
+
+        if ((category as any).children && (category as any).children.length > 0) {
+            results.hasChildren.push({
+                id: (category as any).id,
+                name: (category as any).name,
+                childrenCount: (category as any).children.length,
+            });
+            continue;
+        }
+
+        await category.destroy();
+        results.success.push({
+            id: (category as any).id,
+            name: (category as any).name,
+        });
+    }
+
+    const totalProcessed = results.success.length + results.notFound.length + 
+                          results.hasChildren.length + results.alreadyHardDeleted.length;
+
+    return successResponse(res, {
+        message: req.t('category:bulk_delete_completed', { 
+            success: results.success.length,
+            total: totalProcessed 
+        }),
+        data: {
+            summary: {
+                total: ids.length,
+                successCount: results.success.length,
+                notFoundCount: results.notFound.length,
+                hasChildrenCount: results.hasChildren.length,
+                hardDeletedCount: results.alreadyHardDeleted.length,
+            },
+            details: results,
+        }
+    });
+});

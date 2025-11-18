@@ -7,6 +7,11 @@
   "slug_exists": "This slug already exists",
   "parent_id_invalid": "Parent category ID is invalid",
   "parent_not_found": "Parent category not found",
+  "id_invalid": "Category ID is invalid",
   "category_created": "Category created successfully",
-  "categories_fetched": "Categories fetched successfully"
+  "categories_fetched": "Categories fetched successfully",
+  "ids_required": "IDs list is required",
+  "ids_must_be_array": "IDs must be an array",
+  "ids_min_length": "At least 1 ID is required",
+  "bulk_delete_completed": "Bulk delete completed: {{success}}/{{total}} successful"
 }

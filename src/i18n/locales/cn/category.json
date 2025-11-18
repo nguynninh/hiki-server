@@ -7,6 +7,11 @@
   "slug_exists": "此Slug已存在",
   "parent_id_invalid": "父类别ID无效",
   "parent_not_found": "未找到父类别",
+  "id_invalid": "类别ID无效",
   "category_created": "创建类别成功",
-  "categories_fetched": "获取类别列表成功"
+  "categories_fetched": "获取类别列表成功",
+  "ids_required": "ID列表是必需的",
+  "ids_must_be_array": "ID必须是数组",
+  "ids_min_length": "至少需要1个ID",
+  "bulk_delete_completed": "批量删除完成：{{success}}/{{total}}成功"
 }
