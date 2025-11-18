@@ -4,6 +4,11 @@ import PermissionModel from './PermissionModel';
 import FileMgmtModel from './FileMgmt';
 import UserRelationship from './UserRelationship';
 import CategoryModel from './CategoryModel';
+import AttributeModel from './AttributeModel';
+import AttributeValueModel from './AttributeValueModel';
+import ProductModel from './ProductModel';
+import ProductVariantModel from './ProductVariantModel';
+import ProductVariantAttributeModel from './ProductVariantAttributeModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -78,6 +83,94 @@ CategoryModel.hasMany(CategoryModel, {
     as: 'children',
 });
 
+CategoryModel.hasMany(ProductModel, {
+    foreignKey: 'category_id',
+    as: 'products',
+});
+
+ProductModel.belongsTo(CategoryModel, {
+    foreignKey: 'category_id',
+    as: 'category',
+});
+
+UserModel.hasMany(ProductModel, {
+    foreignKey: 'seller_id',
+    as: 'products',
+});
+
+ProductModel.belongsTo(UserModel, {
+    foreignKey: 'seller_id',
+    as: 'seller',
+});
+
+AttributeModel.hasMany(AttributeValueModel, {
+    foreignKey: 'attribute_id',
+    as: 'values',
+});
+
+AttributeValueModel.belongsTo(AttributeModel, {
+    foreignKey: 'attribute_id',
+    as: 'attribute',
+});
+
+ProductModel.hasMany(ProductVariantModel, {
+    foreignKey: 'product_id',
+    as: 'variants',
+});
+
+ProductVariantModel.belongsTo(ProductModel, {
+    foreignKey: 'product_id',
+    as: 'product',
+});
+
+ProductVariantModel.hasMany(ProductVariantAttributeModel, {
+    foreignKey: 'variant_id',
+    as: 'variantAttributes',
+});
+
+ProductVariantAttributeModel.belongsTo(ProductVariantModel, {
+    foreignKey: 'variant_id',
+    as: 'variant',
+});
+
+ProductVariantAttributeModel.belongsTo(AttributeModel, {
+    foreignKey: 'attribute_id',
+    as: 'attribute',
+});
+
+ProductVariantAttributeModel.belongsTo(AttributeValueModel, {
+    foreignKey: 'attribute_value_id',
+    as: 'value',
+});
+
+AttributeModel.belongsToMany(ProductVariantModel, {
+    through: ProductVariantAttributeModel,
+    foreignKey: 'attribute_id',
+    otherKey: 'variant_id',
+    as: 'variants',
+});
+
+ProductVariantModel.belongsToMany(AttributeModel, {
+    through: ProductVariantAttributeModel,
+    foreignKey: 'variant_id',
+    otherKey: 'attribute_id',
+    as: 'attributes',
+});
+
+AttributeValueModel.belongsToMany(ProductVariantModel, {
+    through: ProductVariantAttributeModel,
+    foreignKey: 'attribute_value_id',
+    otherKey: 'variant_id',
+    as: 'variants',
+});
+
+ProductVariantModel.belongsToMany(AttributeValueModel, {
+    through: ProductVariantAttributeModel,
+    foreignKey: 'variant_id',
+    otherKey: 'attribute_value_id',
+    as: 'values',
+});
+
 export {
     UserModel,
     RoleModel,
@@ -85,4 +178,9 @@ export {
     FileMgmtModel,
     UserRelationship,
     CategoryModel,
+    AttributeModel,
+    AttributeValueModel,
+    ProductModel,
+    ProductVariantModel,
+    ProductVariantAttributeModel,
 };
