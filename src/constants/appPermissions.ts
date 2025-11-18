@@ -13,6 +13,7 @@ const permissionsList = [
   "ROLE_CREATE",
   "PERMISSION_VIEW",
   "CATEGORY_CREATE",
+  "CATEGORY_LIST",
 ];
 
 export default permissionsList;

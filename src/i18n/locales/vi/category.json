@@ -7,5 +7,6 @@
   "slug_exists": "Slug này đã tồn tại",
   "parent_id_invalid": "ID danh mục cha không hợp lệ",
   "parent_not_found": "Danh mục cha không tồn tại",
-  "category_created": "Tạo danh mục thành công"
+  "category_created": "Tạo danh mục thành công",
+  "categories_fetched": "Lấy danh sách danh mục thành công"
 }

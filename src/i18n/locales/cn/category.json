@@ -7,5 +7,6 @@
   "slug_exists": "此Slug已存在",
   "parent_id_invalid": "父类别ID无效",
   "parent_not_found": "未找到父类别",
-  "category_created": "创建类别成功"
+  "category_created": "创建类别成功",
+  "categories_fetched": "获取类别列表成功"
 }

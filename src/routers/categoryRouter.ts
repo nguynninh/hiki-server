@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
     createCategory,
+    getListCategories,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
@@ -16,6 +17,13 @@ router.post(
     authorize('CATEGORY_CREATE'),
     validateCreateCategory,
     createCategory,
+);
+
+router.get(
+    ['/', "/search"],
+    authenticate,
+    authorize('CATEGORY_LIST'),
+    getListCategories,
 );
 
 export default router;
