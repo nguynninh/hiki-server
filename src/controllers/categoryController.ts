@@ -201,3 +201,31 @@ export const getCategory = asyncHandler(async (req: Request, res: Response) => {
         }
     });
 });
+
+export const softdeleteCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByPk(id, {
+        include: [
+            {
+                model: CategoryModel,
+                as: 'children',
+            }
+        ],
+    });
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    if ((category as any).children && (category as any).children.length > 0) {
+        throw new ValidationError(req.t('category:has_children'));
+    }
+
+    await category.destroy();
+
+    return successResponse(res, {
+        message: req.t('category:category_deleted'),
+        data: null,
+    });
+});

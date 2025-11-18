@@ -3,11 +3,13 @@ import {
     createCategory,
     getListCategories,
     getCategory,
+    softdeleteCategory,
     deleteCategories,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
     validateGetCategory,
+    validateSoftDeleteCategory,
     validateDeleteCategories,
 } from '../validation/validateCategory';
 import { authenticate } from '../middlewares/auth';
@@ -44,6 +46,14 @@ router.get(
     authorize('CATEGORY_VIEW'),
     validateGetCategory,
     getCategory,
+);
+
+router.delete(
+    '/:id',
+    authenticate,
+    authorize('CATEGORY_SOFT_DELETE'),
+    validateSoftDeleteCategory,
+    softdeleteCategory,
 );
 
 export default router;
