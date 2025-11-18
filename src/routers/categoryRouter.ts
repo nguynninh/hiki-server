@@ -3,6 +3,7 @@ import {
     createCategory,
     getListCategories,
     getCategory,
+    updateCategory,
     restoreCategory,
     hardDeleteCategory,
     softdeleteCategory,
@@ -11,6 +12,7 @@ import {
 import { 
     validateCreateCategory,
     validateGetCategory,
+    validateUpdateCategory,
     validateRestoreCategory,
     validateHardDeleteCategory,
     validateSoftDeleteCategory,
@@ -50,6 +52,14 @@ router.get(
     authorize('CATEGORY_VIEW'),
     validateGetCategory,
     getCategory,
+);
+
+router.put(
+    '/:id',
+    authenticate,
+    authorize('CATEGORY_UPDATE'),
+    validateUpdateCategory,
+    updateCategory,
 );
 
 router.delete(

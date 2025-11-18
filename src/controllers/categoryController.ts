@@ -315,3 +315,70 @@ export const restoreCategory = asyncHandler(async (req: Request, res: Response) 
         }
     });
 });
+
+export const updateCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const {
+        name,
+        slug,
+        parent_id,
+    } = req.body;
+
+    const category = await CategoryModel.findByPk(id);
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    if (slug && slug !== (category as any).slug) {
+        const existingCategory = await CategoryModel.findOne({
+            where: {
+                slug,
+                id: { [Op.ne]: id }
+            }
+        });
+        if (existingCategory) {
+            throw new ValidationError(req.t('category:slug_exists'));
+        }
+    }
+
+    if (parent_id !== undefined) {
+        if (parent_id === id) {
+            throw new ValidationError(req.t('category:cannot_be_self_parent'));
+        }
+        if (parent_id) {
+            const parentCategory = await CategoryModel.findByPk(parent_id);
+            if (!parentCategory) {
+                throw new ValidationError(req.t('category:parent_not_found'));
+            }
+        }
+    }
+
+    await category.update({
+        ...(name && { name }),
+        ...(slug && { slug }),
+        ...(parent_id !== undefined && { parent_id: parent_id || null }),
+    });
+
+    await category.reload({
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    return successResponse(res, {
+        message: req.t('category:category_updated'),
+        data: {
+            category: category.toJSON(),
+        }
+    });
+});
