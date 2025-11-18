@@ -24,5 +24,9 @@
   "ids_required": "ID列表是必需的",
   "ids_must_be_array": "ID必须是数组",
   "ids_min_length": "至少需要1个ID",
-  "bulk_delete_completed": "批量删除完成：{{success}}/{{total}}成功"
+  "bulk_delete_completed": "批量删除完成：{{success}}/{{total}}成功",
+  "image_required": "图片是必需的",
+  "image_invalid_type": "无效的图片格式。仅接受：JPG、PNG、GIF、WebP",
+  "image_too_large": "图片大小过大。最大{{max}}",
+  "image_uploaded": "图片上传成功"
 }

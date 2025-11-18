@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import multer from 'multer';
 import {
     createCategory,
     getListCategories,
@@ -8,6 +9,7 @@ import {
     hardDeleteCategory,
     softdeleteCategory,
     deleteCategories,
+    uploadCategoryAvatar,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
@@ -17,11 +19,13 @@ import {
     validateHardDeleteCategory,
     validateSoftDeleteCategory,
     validateDeleteCategories,
+    validateUploadCategoryAvatar,
 } from '../validation/validateCategory';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
     '/',
@@ -84,6 +88,15 @@ router.post(
     authorize('CATEGORY_RESTORE'),
     validateRestoreCategory,
     restoreCategory,
+);
+
+router.post(
+    '/:id/avatar',
+    authenticate,
+    authorize('CATEGORY_UPLOAD_AVATAR'),
+    upload.single('avatar'),
+    validateUploadCategoryAvatar,
+    uploadCategoryAvatar,
 );
 
 export default router;

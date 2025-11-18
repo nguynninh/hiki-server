@@ -2,6 +2,8 @@ import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from '../exception/AppError';
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 export const validateCreateCategory = (req: Request, res: Response, next: NextFunction) => {
     const categorySchema = Joi.object({
         name: Joi.string()
@@ -66,6 +68,43 @@ export const validateDeleteCategories = (req: Request, res: Response, next: Next
             message: d.message
         }));
         return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
+
+export const validateUploadCategoryAvatar = (req: Request, res: Response, next: NextFunction) => {
+    const paramsSchema = Joi.object({
+        id: Joi.string()
+            .uuid()
+            .required()
+            .messages({
+                'string.guid': req.t('category:id_invalid'),
+                'any.required': req.t('category:id_required'),
+            }),
+    });
+
+    const { error } = paramsSchema.validate(req.params, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    if (!req.file) {
+        return next(new ValidationError(req.t('category:image_required')));
+    }
+
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedMimeTypes.includes(req.file.mimetype)) {
+        return next(new ValidationError(req.t('category:image_invalid_type')));
+    }
+
+    if (req.file.size > MAX_FILE_SIZE) {
+        return next(new ValidationError(req.t('category:image_too_large', { max: `${MAX_FILE_SIZE / (1024 * 1024)}MB` })));
     }
 
     next();

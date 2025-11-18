@@ -24,5 +24,9 @@
   "ids_required": "Danh sách ID là bắt buộc",
   "ids_must_be_array": "Danh sách ID phải là mảng",
   "ids_min_length": "Phải có ít nhất 1 ID",
-  "bulk_delete_completed": "Hoàn thành xóa: {{success}}/{{total}} thành công"
+  "bulk_delete_completed": "Hoàn thành xóa: {{success}}/{{total}} thành công",
+  "image_required": "Ảnh là bắt buộc",
+  "image_invalid_type": "Định dạng ảnh không hợp lệ. Chỉ chấp nhận: JPG, PNG, GIF, WebP",
+  "image_too_large": "Kích thước ảnh quá lớn. Tối đa {{max}}",
+  "image_uploaded": "Upload ảnh thành công"
 }

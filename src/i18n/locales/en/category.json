@@ -24,5 +24,9 @@
   "ids_required": "IDs list is required",
   "ids_must_be_array": "IDs must be an array",
   "ids_min_length": "At least 1 ID is required",
-  "bulk_delete_completed": "Bulk delete completed: {{success}}/{{total}} successful"
+  "bulk_delete_completed": "Bulk delete completed: {{success}}/{{total}} successful",
+  "image_required": "Image is required",
+  "image_invalid_type": "Invalid image format. Only accepts: JPG, PNG, GIF, WebP",
+  "image_too_large": "Image size too large. Maximum {{max}}",
+  "image_uploaded": "Image uploaded successfully"
 }
