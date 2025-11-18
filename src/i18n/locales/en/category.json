@@ -7,5 +7,6 @@
   "slug_exists": "This slug already exists",
   "parent_id_invalid": "Parent category ID is invalid",
   "parent_not_found": "Parent category not found",
-  "category_created": "Category created successfully"
+  "category_created": "Category created successfully",
+  "categories_fetched": "Categories fetched successfully"
 }

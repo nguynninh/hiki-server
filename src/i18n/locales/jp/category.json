@@ -7,5 +7,6 @@
   "slug_exists": "このスラッグは既に存在します",
   "parent_id_invalid": "親カテゴリIDが無効です",
   "parent_not_found": "親カテゴリが見つかりません",
-  "category_created": "カテゴリの作成に成功しました"
+  "category_created": "カテゴリの作成に成功しました",
+  "categories_fetched": "カテゴリリストの取得に成功しました"
 }
