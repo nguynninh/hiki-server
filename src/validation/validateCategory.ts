@@ -70,3 +70,27 @@ export const validateDeleteCategories = (req: Request, res: Response, next: Next
 
     next();
 };
+
+export const validateGetCategory = (req: Request, res: Response, next: NextFunction) => {
+    const paramsSchema = Joi.object({
+        id: Joi.string()
+            .uuid()
+            .required()
+            .messages({
+                'string.guid': req.t('category:id_invalid'),
+                'any.required': req.t('category:id_required'),
+            }),
+    });
+
+    const { error } = paramsSchema.validate(req.params, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map((d) => ({
+            field: d.path.join('.'),
+            message: d.message
+        }));
+        return next(new ValidationError(req.t('common:validation_error'), errors));
+    }
+
+    next();
+};
