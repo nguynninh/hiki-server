@@ -2,10 +2,12 @@ import { Router } from 'express';
 import {
     createCategory,
     getListCategories,
+    getCategory,
     deleteCategories,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
+    validateGetCategory,
     validateDeleteCategories,
 } from '../validation/validateCategory';
 import { authenticate } from '../middlewares/auth';
@@ -34,6 +36,14 @@ router.delete(
     authorize('CATEGORY_DELETE'),
     validateDeleteCategories,
     deleteCategories,
+);
+
+router.get(
+    '/:id',
+    authenticate,
+    authorize('CATEGORY_VIEW'),
+    validateGetCategory,
+    getCategory,
 );
 
 export default router;

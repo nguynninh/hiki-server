@@ -171,3 +171,33 @@ export const deleteCategories = asyncHandler(async (req: Request, res: Response)
         }
     });
 });
+
+export const getCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByPk(id, {
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    return successResponse(res, {
+        message: req.t('category:category_fetched'),
+        data: {
+            category: category.toJSON(),
+        }
+    });
+});
