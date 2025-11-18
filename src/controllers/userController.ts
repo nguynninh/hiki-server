@@ -227,10 +227,11 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
     return successResponse(res, {
         message: req.t('user:users_listed'),
         data: {
-            users: users.map(user => ({
+            users: await Promise.all(users.map(async (user) => ({
                 ...user.toJSON(),
                 password: undefined,
-            })),
+                avatar: await getFileUrl((user as any).avatar),
+            }))),
             paginations: Pagination(
                 pageNumber,
                 limitNumber,
@@ -281,7 +282,7 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
         throw new NotFoundError(req.t('auth:user_not_found'));
     }
 
-    const { fileRecord, publicUrl } = await uploadImage(userId, avatar);
+    const { fileRecord } = await uploadImage(userId, avatar);
 
     if (user.avatar)
         await deleteFile(user.avatar);
@@ -295,9 +296,8 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
-                avatar: user.avatar ? await getFileUrl(user.avatar) : null,
+                avatar: await getFileUrl(user.avatar),
             },
-            public_url: publicUrl,
         }
     });
 });

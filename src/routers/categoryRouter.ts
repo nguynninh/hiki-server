@@ -10,6 +10,7 @@ import {
     softdeleteCategory,
     deleteCategories,
     uploadCategoryAvatar,
+    deleteCategoryAvatar,
 } from '../controllers/categoryController';
 import { 
     validateCreateCategory,
@@ -20,6 +21,7 @@ import {
     validateSoftDeleteCategory,
     validateDeleteCategories,
     validateUploadCategoryAvatar,
+    validateDeleteCategoryAvatar,
 } from '../validation/validateCategory';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
@@ -98,5 +100,13 @@ router.post(
     validateUploadCategoryAvatar,
     uploadCategoryAvatar,
 );
+
+router.delete(
+    '/:id/avatar',
+    authenticate,
+    authorize('CATEGORY_DELETE_AVATAR'),
+    validateDeleteCategoryAvatar,
+    deleteCategoryAvatar,
+)
 
 export default router;

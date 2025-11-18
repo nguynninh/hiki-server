@@ -24,6 +24,7 @@ const permissionsList = [
   "CATEGORY_HARD_DELETE",
   "CATEGORY_RESTORE",
   "CATEGORY_UPLOAD_AVATAR",
+  "CATEGORY_DELETE_AVATAR",
 ];
 
 export default permissionsList;
