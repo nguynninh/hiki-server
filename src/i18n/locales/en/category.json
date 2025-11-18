@@ -1,0 +1,11 @@
+{
+  "name_required": "Category name is required",
+  "name_max_length": "Category name must not exceed {{max}} characters",
+  "slug_required": "Slug is required",
+  "slug_max_length": "Slug must not exceed {{max}} characters",
+  "slug_invalid_format": "Slug can only contain lowercase letters, numbers and hyphens",
+  "slug_exists": "This slug already exists",
+  "parent_id_invalid": "Parent category ID is invalid",
+  "parent_not_found": "Parent category not found",
+  "category_created": "Category created successfully"
+}

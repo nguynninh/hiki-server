@@ -3,6 +3,7 @@ import RoleModel from './RoleModel';
 import PermissionModel from './PermissionModel';
 import FileMgmtModel from './FileMgmt';
 import UserRelationship from './UserRelationship';
+import CategoryModel from './CategoryModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -67,10 +68,21 @@ UserRelationship.belongsTo(UserModel, {
     as: 'target',
 });
 
+CategoryModel.belongsTo(CategoryModel, {
+    foreignKey: 'parent_id',
+    as: 'parent',
+});
+
+CategoryModel.hasMany(CategoryModel, {
+    foreignKey: 'parent_id',
+    as: 'children',
+});
+
 export {
     UserModel,
     RoleModel,
     PermissionModel,
     FileMgmtModel,
     UserRelationship,
+    CategoryModel,
 };

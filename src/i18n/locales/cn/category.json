@@ -1,0 +1,11 @@
+{
+  "name_required": "类别名称是必需的",
+  "name_max_length": "类别名称不能超过{{max}}个字符",
+  "slug_required": "Slug是必需的",
+  "slug_max_length": "Slug不能超过{{max}}个字符",
+  "slug_invalid_format": "Slug只能包含小写字母、数字和连字符",
+  "slug_exists": "此Slug已存在",
+  "parent_id_invalid": "父类别ID无效",
+  "parent_not_found": "未找到父类别",
+  "category_created": "创建类别成功"
+}

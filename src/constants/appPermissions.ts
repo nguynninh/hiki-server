@@ -12,6 +12,7 @@ const permissionsList = [
   "USER_UNBLOCK",
   "ROLE_CREATE",
   "PERMISSION_VIEW",
+  "CATEGORY_CREATE",
 ];
 
 export default permissionsList;
