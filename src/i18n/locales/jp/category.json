@@ -15,6 +15,8 @@
   "category_deleted": "カテゴリの削除に成功しました",
   "category_not_found": "カテゴリが見つかりません",
   "has_children": "子カテゴリがあるため削除できません",
+  "category_not_deleted": "カテゴリは削除されていません",
+  "category_restored": "カテゴリの復元に成功しました",
   "category_hard_deleted": "カテゴリの完全削除に成功しました",
   "must_soft_delete_first": "完全削除する前にカテゴリを論理削除する必要があります",
   "ids_required": "IDリストは必須です",

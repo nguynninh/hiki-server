@@ -18,6 +18,7 @@ const permissionsList = [
   "CATEGORY_VIEW",
   "CATEGORY_SOFT_DELETE",
   "CATEGORY_HARD_DELETE",
+  "CATEGORY_RESTORE",
 ];
 
 export default permissionsList;
