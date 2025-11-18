@@ -263,3 +263,55 @@ export const hardDeleteCategory = asyncHandler(async (req: Request, res: Respons
         data: null,
     });
 });
+
+export const restoreCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByPk(id, {
+        paranoid: false,
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    if ((category as any).deleted_at === null) {
+        throw new ValidationError(req.t('category:category_not_deleted'));
+    }
+
+    await category.restore();
+
+    await category.reload({
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    return successResponse(res, {
+        message: req.t('category:category_restored'),
+        data: {
+            category: category.toJSON(),
+        }
+    });
+});

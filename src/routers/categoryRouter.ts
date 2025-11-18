@@ -3,6 +3,7 @@ import {
     createCategory,
     getListCategories,
     getCategory,
+    restoreCategory,
     hardDeleteCategory,
     softdeleteCategory,
     deleteCategories,
@@ -10,6 +11,7 @@ import {
 import { 
     validateCreateCategory,
     validateGetCategory,
+    validateRestoreCategory,
     validateHardDeleteCategory,
     validateSoftDeleteCategory,
     validateDeleteCategories,
@@ -64,6 +66,14 @@ router.delete(
     authorize('CATEGORY_HARD_DELETE'),
     validateHardDeleteCategory,
     hardDeleteCategory,
+);
+
+router.post(
+    '/:id/restore',
+    authenticate,
+    authorize('CATEGORY_RESTORE'),
+    validateRestoreCategory,
+    restoreCategory,
 );
 
 export default router;
