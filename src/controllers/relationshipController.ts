@@ -44,10 +44,11 @@ const getListFollowUsers = asyncHandler(async (req: Request, res: Response) => {
     return successResponse(res, {
         message: req.t('user:followed_users_listed'),
         data: {
-            users: users.map(user => ({
+            users: await Promise.all(users.map(async (user) => ({
                 ...user.toJSON(),
                 password: undefined,
-            })),
+                avatar: await getFileUrl((user as any).avatar),
+            }))),
             paginations: Pagination(
                 pageNumber,
                 limitNumber,
@@ -90,10 +91,11 @@ const getListUsersFollow = asyncHandler(async (req: Request, res: Response) => {
     return successResponse(res, {
         message: req.t('user:follower_users_listed'),
         data: {
-            users: users.map(user => ({
+            users: await Promise.all(users.map(async (user) => ({
                 ...user.toJSON(),
                 password: undefined,
-            })),
+                avatar: await getFileUrl((user as any).avatar),
+            }))),
             paginations: Pagination(
                 pageNumber,
                 limitNumber,
