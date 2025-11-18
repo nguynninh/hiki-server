@@ -5,7 +5,7 @@ import { successResponse } from '../utils/responseFormatter';
 import { ValidationError, NotFoundError } from "../exception/AppError";
 import { Op } from 'sequelize';
 import Pagination from "../dto/Pagination";
-import { uploadImage } from '../services/fileService';
+import { deleteFile, getFileUrl, uploadImage } from '../services/fileService';
 
 export const createCategory = asyncHandler(async (req: Request, res: Response) => {
     const {
@@ -36,7 +36,10 @@ export const createCategory = asyncHandler(async (req: Request, res: Response) =
         code: 201,
         message: req.t('category:category_created'),
         data: {
-            category: category.toJSON(),
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }
         }
     });
 });
@@ -86,7 +89,10 @@ export const getListCategories = asyncHandler(async (req: Request, res: Response
     return successResponse(res, {
         message: req.t('category:categories_fetched'),
         data: {
-            categories,
+            categories: await Promise.all(categories.map(async (category) => ({
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }))),
             pagination: Pagination(
                 Number(page),
                 Number(limit),
@@ -188,10 +194,12 @@ export const uploadCategoryAvatar = asyncHandler(async (req: Request, res: Respo
     }
 
     const userId = req.user?.sub;
-    const { publicUrl } = await uploadImage(userId, file);
-
+    
+    if ((category as any).image)
+        await deleteFile((category as any).image);
+    const { fileRecord } = await uploadImage(userId, file);
     await category.update({
-        image: publicUrl,
+        image: fileRecord.id,
     });
 
     await category.reload({
@@ -212,7 +220,55 @@ export const uploadCategoryAvatar = asyncHandler(async (req: Request, res: Respo
     return successResponse(res, {
         message: req.t('category:image_uploaded'),
         data: {
-            category: category.toJSON(),
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            },
+        }
+    });
+});
+
+export const deleteCategoryAvatar = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByPk(id);
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    if (!(category as any).image) {
+        throw new ValidationError(req.t('category:no_image_to_delete'));
+    }
+
+    await deleteFile((category as any).image);
+
+    await category.update({
+        image: null,
+    });
+
+    await category.reload({
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    return successResponse(res, {
+        message: req.t('category:image_deleted'),
+        data: {
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }
         }
     });
 });
@@ -242,7 +298,10 @@ export const getCategory = asyncHandler(async (req: Request, res: Response) => {
     return successResponse(res, {
         message: req.t('category:category_fetched'),
         data: {
-            category: category.toJSON(),
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }
         }
     });
 });
@@ -356,7 +415,10 @@ export const restoreCategory = asyncHandler(async (req: Request, res: Response) 
     return successResponse(res, {
         message: req.t('category:category_restored'),
         data: {
-            category: category.toJSON(),
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }
         }
     });
 });
@@ -423,7 +485,10 @@ export const updateCategory = asyncHandler(async (req: Request, res: Response) =
     return successResponse(res, {
         message: req.t('category:category_updated'),
         data: {
-            category: category.toJSON(),
+            category: {
+                ...category.toJSON(),
+                image: await getFileUrl((category as any).image),
+            }
         }
     });
 });

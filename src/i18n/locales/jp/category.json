@@ -28,5 +28,7 @@
   "image_required": "画像は必須です",
   "image_invalid_type": "無効な画像形式です。JPG、PNG、GIF、WebPのみ受け付けます",
   "image_too_large": "画像サイズが大きすぎます。最大{{max}}",
-  "image_uploaded": "画像のアップロードに成功しました"
+  "image_uploaded": "画像のアップロードに成功しました",
+  "no_image_to_delete": "カテゴリに画像がありません",
+  "image_deleted": "画像の削除に成功しました"
 }

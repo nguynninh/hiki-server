@@ -28,5 +28,7 @@
   "image_required": "Image is required",
   "image_invalid_type": "Invalid image format. Only accepts: JPG, PNG, GIF, WebP",
   "image_too_large": "Image size too large. Maximum {{max}}",
-  "image_uploaded": "Image uploaded successfully"
+  "image_uploaded": "Image uploaded successfully",
+  "no_image_to_delete": "Category has no image",
+  "image_deleted": "Image deleted successfully"
 }

@@ -281,7 +281,7 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
         throw new NotFoundError(req.t('auth:user_not_found'));
     }
 
-    const { fileRecord, publicUrl } = await uploadImage(userId, avatar);
+    const { fileRecord } = await uploadImage(userId, avatar);
 
     if (user.avatar)
         await deleteFile(user.avatar);
@@ -297,7 +297,6 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
                 password: undefined,
                 avatar: user.avatar ? await getFileUrl(user.avatar) : null,
             },
-            public_url: publicUrl,
         }
     });
 });

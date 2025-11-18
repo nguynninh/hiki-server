@@ -68,5 +68,5 @@ export async function getFileUrl(fileId: string): Promise<string | null> {
   const fileRecord: any = await FileMgmtModel.findByPk(fileId);
   if (!fileRecord) return null;
   
-  return `${AWS_ENDPOINT}/${BUCKET_NAME}/${fileRecord.path}`;
+  return new URL(`${AWS_ENDPOINT}/${BUCKET_NAME}/${fileRecord.path}`).toString();
 }

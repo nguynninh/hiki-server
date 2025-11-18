@@ -28,5 +28,7 @@
   "image_required": "图片是必需的",
   "image_invalid_type": "无效的图片格式。仅接受：JPG、PNG、GIF、WebP",
   "image_too_large": "图片大小过大。最大{{max}}",
-  "image_uploaded": "图片上传成功"
+  "image_uploaded": "图片上传成功",
+  "no_image_to_delete": "类别没有图片",
+  "image_deleted": "图片删除成功"
 }
