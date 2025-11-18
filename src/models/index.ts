@@ -5,6 +5,11 @@ import {
     FileMgmtModel,
     UserRelationship,
     CategoryModel,
+    AttributeModel,
+    AttributeValueModel,
+    ProductModel,
+    ProductVariantModel,
+    ProductVariantAttributeModel,
 } from './associations';
 
 export {
@@ -14,4 +19,9 @@ export {
     FileMgmtModel,
     UserRelationship,
     CategoryModel,
+    AttributeModel,
+    AttributeValueModel,
+    ProductModel,
+    ProductVariantModel,
+    ProductVariantAttributeModel,
 };
