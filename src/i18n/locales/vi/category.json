@@ -15,6 +15,8 @@
   "category_deleted": "Xóa danh mục thành công",
   "category_not_found": "Không tìm thấy danh mục",
   "has_children": "Không thể xóa danh mục vì còn danh mục con",
+  "category_hard_deleted": "Xóa vĩnh viễn danh mục thành công",
+  "must_soft_delete_first": "Phải xóa mềm danh mục trước khi xóa vĩnh viễn",
   "ids_required": "Danh sách ID là bắt buộc",
   "ids_must_be_array": "Danh sách ID phải là mảng",
   "ids_min_length": "Phải có ít nhất 1 ID",
