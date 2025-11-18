@@ -5,6 +5,7 @@ import { successResponse } from '../utils/responseFormatter';
 import { ValidationError, NotFoundError } from "../exception/AppError";
 import { Op } from 'sequelize';
 import Pagination from "../dto/Pagination";
+import { uploadImage } from '../services/fileService';
 
 export const createCategory = asyncHandler(async (req: Request, res: Response) => {
     const {
@@ -168,6 +169,50 @@ export const deleteCategories = asyncHandler(async (req: Request, res: Response)
                 hardDeletedCount: results.alreadyHardDeleted.length,
             },
             details: results,
+        }
+    });
+});
+
+export const uploadCategoryAvatar = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const file = req.file;
+
+    if (!file) {
+        throw new ValidationError(req.t('category:image_required'));
+    }
+
+    const category = await CategoryModel.findByPk(id);
+
+    if (!category) {
+        throw new NotFoundError(req.t('category:category_not_found'));
+    }
+
+    const userId = req.user?.sub;
+    const { publicUrl } = await uploadImage(userId, file);
+
+    await category.update({
+        image: publicUrl,
+    });
+
+    await category.reload({
+        include: [
+            {
+                model: CategoryModel,
+                as: 'parent',
+                attributes: ['id', 'name', 'slug'],
+            },
+            {
+                model: CategoryModel,
+                as: 'children',
+                attributes: ['id', 'name', 'slug'],
+            }
+        ],
+    });
+
+    return successResponse(res, {
+        message: req.t('category:image_uploaded'),
+        data: {
+            category: category.toJSON(),
         }
     });
 });

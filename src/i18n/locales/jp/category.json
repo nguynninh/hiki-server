@@ -24,5 +24,9 @@
   "ids_required": "IDリストは必須です",
   "ids_must_be_array": "IDは配列である必要があります",
   "ids_min_length": "少なくとも1つのIDが必要です",
-  "bulk_delete_completed": "一括削除完了：{{success}}/{{total}}成功"
+  "bulk_delete_completed": "一括削除完了：{{success}}/{{total}}成功",
+  "image_required": "画像は必須です",
+  "image_invalid_type": "無効な画像形式です。JPG、PNG、GIF、WebPのみ受け付けます",
+  "image_too_large": "画像サイズが大きすぎます。最大{{max}}",
+  "image_uploaded": "画像のアップロードに成功しました"
 }
