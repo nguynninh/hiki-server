@@ -47,5 +47,6 @@
     "not_blocked_user": "このユーザーはブロックされていません。",
     "user_unblocked_successfully": "ユーザーのブロック解除に成功しました。",
     "user_updated_successfully": "ユーザーが正常に更新されました。",
+    "user_deleted_successfully": "ユーザーが正常に削除されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

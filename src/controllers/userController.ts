@@ -376,10 +376,28 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const user: any = await UserModel.findByPk(id);
+
+    if (!user || user.deleted_at) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    await user.destroy();
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_deleted_successfully'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
     updateUser,
+    deleteUser,
     getUser,
     changePassword,
     getListUsers,
