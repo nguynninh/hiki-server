@@ -47,5 +47,6 @@
     "not_blocked_user": "You have not blocked this user.",
     "user_unblocked_successfully": "You have successfully unblocked the user.",
     "user_updated_successfully": "User has been updated successfully.",
+    "user_deleted_successfully": "User has been deleted successfully.",
     "email_exists": "Email already exists."
 }
