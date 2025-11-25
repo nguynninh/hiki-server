@@ -13,6 +13,7 @@ import redisClient from "../database/redisClient";
 import redisKey from "../constants/keyRedis";
 import { sendMail } from "../services/mailService";
 import { parseUserAgent } from "../utils/parseUserAgent";
+import { getFileUrl } from "../services/fileService";
 
 dotenv.config();
 
@@ -62,15 +63,16 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     });
     const permissionNames = Array.from(allPermissions);
 
-    const userData = user.toJSON() as any;
-    delete userData.password;
-    delete userData.roles;
-
     return successResponse(res, {
         code: 200,
         message: req.t('auth:login_successful'),
         data: {
-            user: userData,
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+                roles: undefined,
+                avatar: await getFileUrl((user as any).avatar),
+            },
             auth: {
                 access_token: await getAccesstoken((user as any).id, roleNames, permissionNames, false),
                 refresh_token: await getAccesstoken((user as any).id, roleNames, permissionNames, true),

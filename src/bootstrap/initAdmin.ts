@@ -15,13 +15,6 @@ export async function initSuperAdmin() {
       },
     });
 
-    await RoleModel.findOrCreate({
-      where: { name: roles.USER },
-      defaults: {
-        description: "Regular user role",
-      },
-    });
-
     const permissionRecords = [];
     for (const p of permissionsList) {
       const [perm] = await PermissionModel.findOrCreate({

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
     createRole,
+    getAllRoles,
     getAllPermissions,
 } from '../controllers/roleController';
 import { 
@@ -17,6 +18,14 @@ router.post(
     authorize('ROLE_CREATE'),
     createRole,
     validateCreateRole,
+);
+
+
+router.get(
+    '/',
+    authenticate,
+    authorize('ROLE_LIST'),
+    getAllRoles,
 );
 
 router.get(

@@ -1,4 +1,4 @@
-import { UserModel, RoleModel, PermissionModel, UserRelationship } from "../models";
+import { UserModel, RoleModel, PermissionModel } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -111,7 +111,7 @@ const verifyUser = asyncHandler(async (req: Request, res: Response) => {
         throw new ValidationError(req.t('user:email_already_in_use'));
 
     const rd_verify_user = redisKey.OTP_CREATE_ACCOUNT(email);
-    
+
     const existingOTP = await redisClient.get(rd_verify_user);
     if (existingOTP) {
         throw new ValidationError(req.t("user:otp_already_sent"));
@@ -165,8 +165,6 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
 
-    const avatarUrl = user.avatar ? await getFileUrl(user.avatar) : null;
-
     return successResponse(res, {
         code: 200,
         message: req.t('user:user_retrieved'),
@@ -174,7 +172,7 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
             user: {
                 ...user.toJSON(),
                 password: undefined,
-                avatar: avatarUrl,
+                avatar: await getFileUrl(user.avatar),
             }
         }
     });
@@ -183,7 +181,14 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 const getUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user: any = await UserModel.findByPk(id);
+    const user: any = await UserModel.findByPk(id, {
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+        }],
+    });
     if (!user)
         throw new NotFoundError(req.t('user:user_not_found'));
 
@@ -196,6 +201,7 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
                 ...user.toJSON(),
                 password: undefined,
                 avatar: avatarUrl,
+                roles: user.roles || [],
             }
         }
     });
@@ -207,7 +213,7 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         limit,
         is_deleted,
     } = req.query;
-    
+
     const whereClause: any = {};
     if (is_deleted !== undefined) {
         whereClause.is_deleted = is_deleted === 'true';
@@ -222,6 +228,12 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         limit: limitNumber,
         offset,
         order: [['created_at', 'DESC']],
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+        }],
     });
 
     return successResponse(res, {

@@ -5,6 +5,7 @@ const permissionsList = [
   "USER_UPLOAD_AVATAR",
 
   "ROLE_CREATE",
+  "ROLE_LIST",
   "PERMISSION_VIEW",
 
   "RELATIONSHIP_LIST_FOLLOWING",
