@@ -8,7 +8,7 @@ const Pagination = (
 
     const skip = (currentPage - 1) * limit;
 
-    const prevPage = currentPage > 1 ? currentPage - 1 : null;
+    const previousPage = currentPage > 1 ? currentPage - 1 : null;
     const nextPage = currentPage < totalPages ? currentPage + 1 : null;
 
     return {
@@ -17,7 +17,7 @@ const Pagination = (
         skip,
         totalItems,
         totalPages,
-        prevPage,
+        previousPage,
         nextPage,
     };
 };

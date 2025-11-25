@@ -35,6 +35,18 @@ const createRole = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+
+const getAllRoles = asyncHandler(async (req: Request, res: Response) => {
+    const roles = await RoleModel.findAll();
+
+    return successResponse(res, {
+        message: req.t('role:roles_fetched'),
+        data: {
+            roles,
+        }
+    });
+});
+
 const getAllPermissions = asyncHandler(async (req: Request, res: Response) => {
     const permissions = await PermissionModel.findAll();
 
@@ -48,5 +60,6 @@ const getAllPermissions = asyncHandler(async (req: Request, res: Response) => {
 
 export {
     createRole,
+    getAllRoles,
     getAllPermissions,
 };

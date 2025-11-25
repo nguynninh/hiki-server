@@ -46,5 +46,6 @@
     "mail_unblock_before_block": "このアクションは、あなたがブロックされているため実行できません。",
     "not_blocked_user": "このユーザーはブロックされていません。",
     "user_unblocked_successfully": "ユーザーのブロック解除に成功しました。",
+    "user_updated_successfully": "ユーザーが正常に更新されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }

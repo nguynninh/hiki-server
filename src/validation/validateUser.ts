@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from '../exception/AppError';
+import roles from '../constants/appRoles';
 
 const PASSWORD_MIN_LENGTH = 8;
 const CODE_LENGTH = 6;
@@ -60,6 +61,57 @@ export const validateCreateUser = (req: Request, res: Response, next: NextFuncti
     }
 
     next();
+};
+
+export const validateUpdateUser = (req: Request, res: Response, next: NextFunction) => {
+  const userSchema = Joi.object({
+    firstname: Joi.string()
+      .max(30)
+      .required()
+      .messages({
+        'string.empty': req.t('user:first_name_required'),
+        'string.max': req.t('user:first_name_max_length', { max: 30 }),
+        'any.required': req.t('user:first_name_required'),
+      }),
+    lastname: Joi.string()
+      .max(30)
+      .required()
+      .messages({
+        'string.empty': req.t('user:last_name_required'),
+        'string.max': req.t('user:last_name_max_length', { max: 30 }),
+        'any.required': req.t('user:last_name_required'),
+      }),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required()
+      .messages({
+        'string.empty': req.t('user:email_required'),
+        'string.email': req.t('user:email_invalid'),
+        'any.required': req.t('user:email_required'),
+      }),
+    password: Joi.string()
+      .min(PASSWORD_MIN_LENGTH)
+      .messages({
+        'string.min': req.t('user:password_min_length', { min: PASSWORD_MIN_LENGTH }),
+      }),
+    roles: Joi.array()
+      .items(Joi.string().valid(...Object.values(roles)))
+      .messages({
+        'array.includes': req.t('user:roles_invalid'),
+      }),
+  });
+
+  const { error } = userSchema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    const errors = error.details.map((d) => ({
+      field: d.path.join('.'),
+      message: d.message
+    }));
+    return next(new ValidationError(req.t('common:validation_error'), errors));
+  }
+
+  next();
 };
 
 export const validateGetUser = (req: Request, res: Response, next: NextFunction) => {

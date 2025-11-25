@@ -46,5 +46,6 @@
     "must_unblock_before_block": "This action cannot be performed because you have been blocked.",
     "not_blocked_user": "You have not blocked this user.",
     "user_unblocked_successfully": "You have successfully unblocked the user.",
+    "user_updated_successfully": "User has been updated successfully.",
     "email_exists": "Email already exists."
 }
