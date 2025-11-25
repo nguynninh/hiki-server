@@ -314,9 +314,72 @@ const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const updateUser = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const {
+        firstname,
+        lastname,
+        email,
+        password,
+        roles,
+    } = req.body;
+
+    const user: any = await UserModel.findByPk(id);
+
+    if (!user) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    if (email && email !== user.email) {
+        const existingUser = await UserModel.findOne({ where: { email } });
+        if (existingUser) {
+            throw new ValidationError(req.t('user:email_exists'));
+        }
+        user.email = email;
+    }
+
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+    if (password) {
+        user.password = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT_ROUNDS) || 10);
+    }
+
+    await user.save();
+
+    if (roles && Array.isArray(roles)) {
+        const roleRecords = await RoleModel.findAll({
+            where: {
+                name: roles,
+            },
+        });
+        await (user as any).setRoles(roleRecords);
+    }
+
+    await user.reload({
+        include: [{
+            model: RoleModel,
+            as: 'roles',
+            attributes: ['id', 'name'],
+            through: { attributes: [] },
+        }]
+    });
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_updated_successfully'),
+        data: {
+            user: {
+                ...user.toJSON(),
+                password: undefined,
+            },
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
+    updateUser,
     getUser,
     changePassword,
     getListUsers,

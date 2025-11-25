@@ -46,5 +46,6 @@
     "must_unblock_before_block": "由于您已被屏蔽，无法执行此操作。",
     "not_blocked_user": "您未屏蔽此用户。",
     "user_unblocked_successfully": "您已成功解除屏蔽该用户。",
+    "user_updated_successfully": "用户已成功更新。",
     "email_exists": "电子邮件已存在。"
 }

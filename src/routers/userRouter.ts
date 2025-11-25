@@ -8,6 +8,7 @@ import {
     getUser,
     uploadAvatar,
     verifyUser,
+    updateUser,
 } from '../controllers/userController';
 import { 
     validateAvatar,
@@ -15,6 +16,7 @@ import {
     validateCreateUser,
     validateGetUser,
     validateVerifyUser,
+    validateUpdateUser,
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
@@ -32,6 +34,14 @@ router.post(
     '/verify',
     validateVerifyUser,
     verifyUser,
+);
+
+router.put(
+    '/:id',
+    authenticate,
+    authorize('USER_EDIT'),
+    validateUpdateUser,
+    updateUser,
 );
 
 router.get(

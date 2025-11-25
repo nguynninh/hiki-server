@@ -46,5 +46,6 @@
     "must_unblock_before_block": "Không thể thực hiện hành động này do bạn đã bị chặn.",
     "not_blocked_user": "Bạn chưa chặn người dùng này.",
     "user_unblocked_successfully": "Bạn đã bỏ chặn người dùng thành công.",
+    "user_updated_successfully": "Người dùng đã được cập nhật thành công.",
     "email_exists": "Email đã tồn tại."
 }
