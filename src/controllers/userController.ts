@@ -214,6 +214,7 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         limit,
         is_deleted,
         q,
+        roles,
     } = req.query;
 
     const whereClause: any = {};
@@ -233,6 +234,11 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         ];
     }
 
+    const roleWhereClause: any = {};
+    if (roles && roles !== 'all') {
+        roleWhereClause.name = { [Op.iLike]: roles };
+    }
+
     const pageNumber = parseInt(page as string, 10) || 1;
     const limitNumber = parseInt(limit as string, 10) || 10;
     const offset = (pageNumber - 1) * limitNumber;
@@ -248,6 +254,7 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
             as: 'roles',
             attributes: ['id', 'name'],
             through: { attributes: [] },
+            where: roleWhereClause,
         }],
     });
 
