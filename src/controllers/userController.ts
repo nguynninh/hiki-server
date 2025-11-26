@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
 import path from 'path';
+import { Op } from 'sequelize';
 import { asyncHandler } from '../utils/asyncHandler';
 import { successResponse } from '../utils/responseFormatter';
 import { NotFoundError, ValidationError, UnauthorizedError } from "../exception/AppError";
@@ -212,11 +213,31 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         page,
         limit,
         is_deleted,
+        q,
+        roles,
     } = req.query;
 
     const whereClause: any = {};
-    if (is_deleted !== undefined) {
-        whereClause.is_deleted = is_deleted === 'true';
+
+    let paranoid = true;
+    if (is_deleted === 'all') {
+        paranoid = false;
+    } else if (is_deleted === 'true') {
+        paranoid = false;
+        whereClause.deleted_at = { [Op.not]: null };
+    }
+
+    if (q) {
+        whereClause[Op.or] = [
+            { firstname: { [Op.iLike]: `%${q}%` } },
+            { lastname: { [Op.iLike]: `%${q}%` } },
+            { email: { [Op.iLike]: `%${q}%` } }
+        ];
+    }
+
+    const roleWhereClause: any = {};
+    if (roles && roles !== 'all') {
+        roleWhereClause.name = { [Op.iLike]: roles };
     }
 
     const pageNumber = parseInt(page as string, 10) || 1;
@@ -227,12 +248,14 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         where: whereClause,
         limit: limitNumber,
         offset,
+        paranoid,
         order: [['created_at', 'DESC']],
         include: [{
             model: RoleModel,
             as: 'roles',
             attributes: ['id', 'name'],
             through: { attributes: [] },
+            where: roleWhereClause,
         }],
     });
 
