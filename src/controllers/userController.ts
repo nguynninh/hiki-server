@@ -416,11 +416,29 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const restoreUser = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const user: any = await UserModel.findByPk(id, { paranoid: false });
+
+    if (!user || !user.deleted_at) {
+        throw new NotFoundError(req.t('user:user_not_found'));
+    }
+
+    await user.restore();
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:user_restored_successfully'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
     updateUser,
     deleteUser,
+    restoreUser,
     getUser,
     changePassword,
     getListUsers,

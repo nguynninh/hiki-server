@@ -48,5 +48,6 @@
     "user_unblocked_successfully": "You have successfully unblocked the user.",
     "user_updated_successfully": "User has been updated successfully.",
     "user_deleted_successfully": "User has been deleted successfully.",
+    "user_restored_successfully": "User has been restored successfully.",
     "email_exists": "Email already exists."
 }

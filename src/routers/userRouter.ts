@@ -10,6 +10,7 @@ import {
     verifyUser,
     updateUser,
     deleteUser,
+    restoreUser,
 } from '../controllers/userController';
 import { 
     validateAvatar,
@@ -19,6 +20,7 @@ import {
     validateVerifyUser,
     validateUpdateUser,
     validateDeleteUser,
+    validateRestoreUser,
 } from '../validation/validateUser';
 import { authenticate } from '../middlewares/auth';
 import { authorize } from '../middlewares/authorize';
@@ -73,6 +75,14 @@ router.delete(
     authorize('USER_DELETE'),
     validateDeleteUser,
     deleteUser,
+);
+
+router.put(
+    '/:id/restore',
+    authenticate,
+    authorize('USER_RESTORE'),
+    validateRestoreUser,
+    restoreUser,
 );
 
 router.post(

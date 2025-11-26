@@ -48,5 +48,6 @@
     "user_unblocked_successfully": "Bạn đã bỏ chặn người dùng thành công.",
     "user_updated_successfully": "Người dùng đã được cập nhật thành công.",
     "user_deleted_successfully": "Người dùng đã được xóa thành công.",
+    "user_restored_successfully": "Người dùng đã được khôi phục thành công.",
     "email_exists": "Email đã tồn tại."
 }
