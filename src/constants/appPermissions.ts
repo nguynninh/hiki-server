@@ -3,6 +3,7 @@ const permissionsList = [
   "USER_LIST",
   "USER_EDIT",
   "USER_DELETE",
+  "USER_RESTORE",
   "USER_CHANGE_PASSWORD",
   "USER_UPLOAD_AVATAR",
 
