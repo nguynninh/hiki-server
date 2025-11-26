@@ -230,7 +230,8 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
     if (q) {
         whereClause[Op.or] = [
             { firstname: { [Op.iLike]: `%${q}%` } },
-            { lastname: { [Op.iLike]: `%${q}%` } }
+            { lastname: { [Op.iLike]: `%${q}%` } },
+            { email: { [Op.iLike]: `%${q}%` } }
         ];
     }
 
