@@ -11,8 +11,9 @@ import {
     updateUser,
     deleteUser,
     restoreUser,
+    createAvatarDefault,
 } from '../controllers/userController';
-import { 
+import {
     validateAvatar,
     validateChangePassword,
     validateCreateUser,
@@ -29,7 +30,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
-    ['/','/registration'],
+    ['/', '/registration'],
     validateCreateUser,
     createUser,
 );
@@ -38,6 +39,14 @@ router.post(
     '/verify',
     validateVerifyUser,
     verifyUser,
+);
+
+router.post(
+    '/avatar-default',
+    authenticate,
+    authorize('USER_AVATAR_DEFAULT_CREATE'),
+    upload.single('avatar'),
+    createAvatarDefault,
 );
 
 router.put(

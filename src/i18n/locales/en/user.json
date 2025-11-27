@@ -49,5 +49,6 @@
     "user_updated_successfully": "User has been updated successfully.",
     "user_deleted_successfully": "User has been deleted successfully.",
     "user_restored_successfully": "User has been restored successfully.",
+    "avatar_default_created": "Default avatar has been created successfully.",
     "email_exists": "Email already exists."
 }

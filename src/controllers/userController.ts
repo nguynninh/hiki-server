@@ -1,4 +1,4 @@
-import { UserModel, RoleModel, PermissionModel } from "../models";
+import { UserModel, RoleModel, PermissionModel, AvatarDefaultModel, FileMgmtModel } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -433,6 +433,36 @@ const restoreUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
+const createAvatarDefault = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const file = req.file;
+    const { name } = req.body;
+
+    if (!file) {
+        throw new ValidationError(req.t('user:avatar_required'));
+    }
+
+    const { fileRecord } = await uploadImage(userId!, file);
+
+    const avatarDefault = await AvatarDefaultModel.create({
+        file_id: fileRecord.id,
+        created_by: userId,
+        name: name || file.originalname,
+    });
+
+    return successResponse(res, {
+        code: 201,
+        message: req.t('user:avatar_default_created'),
+        data: {
+            avatar: {
+                id: avatarDefault.getDataValue('id'),
+                url: await getFileUrl(fileRecord.id),
+                name: avatarDefault.getDataValue('name'),
+            }
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -444,4 +474,5 @@ export {
     getListUsers,
     uploadAvatar,
     getMe,
+    createAvatarDefault,
 };
