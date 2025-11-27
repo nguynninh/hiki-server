@@ -9,6 +9,7 @@ import AttributeValueModel from './AttributeValueModel';
 import ProductModel from './ProductModel';
 import ProductVariantModel from './ProductVariantModel';
 import ProductVariantAttributeModel from './ProductVariantAttributeModel';
+import AvatarDefaultModel from './AvatarDefault';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -183,4 +184,15 @@ export {
     ProductModel,
     ProductVariantModel,
     ProductVariantAttributeModel,
+    AvatarDefaultModel,
 };
+
+AvatarDefaultModel.belongsTo(FileMgmtModel, {
+    foreignKey: 'file_id',
+    as: 'file',
+});
+
+AvatarDefaultModel.belongsTo(UserModel, {
+    foreignKey: 'created_by',
+    as: 'creator',
+});

@@ -49,5 +49,6 @@
     "user_updated_successfully": "Người dùng đã được cập nhật thành công.",
     "user_deleted_successfully": "Người dùng đã được xóa thành công.",
     "user_restored_successfully": "Người dùng đã được khôi phục thành công.",
+    "avatar_default_created": "Ảnh đại diện mặc định đã được tạo thành công.",
     "email_exists": "Email đã tồn tại."
 }

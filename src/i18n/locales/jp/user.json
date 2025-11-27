@@ -49,5 +49,6 @@
     "user_updated_successfully": "ユーザーが正常に更新されました。",
     "user_deleted_successfully": "ユーザーが正常に削除されました。",
     "user_restored_successfully": "ユーザーが正常に復元されました。",
+    "avatar_default_created": "デフォルトのアバターが正常に作成されました。",
     "email_exists": "メールアドレスは既に存在しています。"
 }
