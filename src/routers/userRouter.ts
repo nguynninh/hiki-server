@@ -12,6 +12,7 @@ import {
     deleteUser,
     restoreUser,
     createAvatarDefault,
+    getListAvatarDefault,
 } from '../controllers/userController';
 import {
     validateAvatar,
@@ -47,6 +48,13 @@ router.post(
     authorize('USER_AVATAR_DEFAULT_CREATE'),
     upload.single('avatar'),
     createAvatarDefault,
+);
+
+router.get(
+    ['/avatar-defaults', '/avatar-defaults/search'],
+    authenticate,
+    authorize('USER_AVATAR_DEFAULT_LIST'),
+    getListAvatarDefault,
 );
 
 router.put(
