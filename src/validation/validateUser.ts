@@ -126,7 +126,7 @@ export const validateGetUser = (req: Request, res: Response, next: NextFunction)
       }),
   });
 
-  const { error } = idSchema.validate(req.body, { abortEarly: false });
+  const { error } = idSchema.validate(req.params, { abortEarly: false });
 
   if (error) {
     const errors = error.details.map((d) => ({

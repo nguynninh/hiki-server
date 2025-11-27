@@ -31,6 +31,7 @@ const permissionsList = [
   "CATEGORY_DELETE_AVATAR",
 
   "USER_AVATAR_DEFAULT_CREATE",
+  "USER_AVATAR_DEFAULT_LIST",
 ];
 
 export default permissionsList;

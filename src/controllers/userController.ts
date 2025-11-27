@@ -463,6 +463,40 @@ const createAvatarDefault = asyncHandler(async (req: Request, res: Response) => 
     });
 });
 
+const getListAvatarDefault = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const {
+        q = '',
+        page = 1,
+        limit = 10,
+    } = req.query;
+
+    const avatarDefaults = await AvatarDefaultModel.findAll({
+        where: {
+            created_by: userId,
+            ...(q ? { name: { [Op.iLike]: `%${q}%` } } : {}),
+        },
+        limit: Number(limit),
+        offset: (Number(page) - 1) * Number(limit),
+    });
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:avatar_defaults_listed'),
+        data: {
+            avatar_defaults: await Promise.all(avatarDefaults.map(async (avatarDefault: any) => ({
+                ...avatarDefault.toJSON(),
+                url: await getFileUrl(avatarDefault.file_id),
+            }))),
+            pagination: Pagination(
+                Number(page),
+                Number(limit),
+                avatarDefaults.length,
+            ),
+        }
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -475,4 +509,5 @@ export {
     uploadAvatar,
     getMe,
     createAvatarDefault,
+    getListAvatarDefault,
 };
