@@ -13,6 +13,7 @@ import {
     restoreUser,
     createAvatarDefault,
     getListAvatarDefault,
+    deleteAvatarDefault,
 } from '../controllers/userController';
 import {
     validateAvatar,
@@ -43,7 +44,7 @@ router.post(
 );
 
 router.post(
-    '/avatar-default',
+    '/avatar-defaults',
     authenticate,
     authorize('USER_AVATAR_DEFAULT_CREATE'),
     upload.single('avatar'),
@@ -56,6 +57,13 @@ router.get(
     authorize('USER_AVATAR_DEFAULT_LIST'),
     getListAvatarDefault,
 );
+
+router.delete(
+    '/avatar-defaults/:id',
+    authenticate,
+    authorize('USER_AVATAR_DEFAULT_DELETE'),
+    deleteAvatarDefault,
+)
 
 router.put(
     '/:id',

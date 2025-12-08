@@ -50,5 +50,7 @@
     "user_deleted_successfully": "User has been deleted successfully.",
     "user_restored_successfully": "User has been restored successfully.",
     "avatar_default_created": "Default avatar has been created successfully.",
-    "email_exists": "Email already exists."
+    "email_exists": "Email already exists.",
+    "avatar_default_not_found": "Default avatar not found.",
+    "avatar_default_deleted": "Default avatar has been deleted successfully."
 }

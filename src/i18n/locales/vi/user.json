@@ -50,5 +50,7 @@
     "user_deleted_successfully": "Người dùng đã được xóa thành công.",
     "user_restored_successfully": "Người dùng đã được khôi phục thành công.",
     "avatar_default_created": "Ảnh đại diện mặc định đã được tạo thành công.",
-    "email_exists": "Email đã tồn tại."
+    "email_exists": "Email đã tồn tại.",
+    "avatar_default_not_found": "Không tìm thấy ảnh đại diện mặc định.",
+    "avatar_default_deleted": "Ảnh đại diện mặc định đã được xóa thành công."
 }
