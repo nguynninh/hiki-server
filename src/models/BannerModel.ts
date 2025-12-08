@@ -19,6 +19,10 @@ const BannerModel = sequelize.define('banners', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    priority: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+    },
     is_active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

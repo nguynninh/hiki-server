@@ -15,18 +15,19 @@ app.use(`${baseUrl}/users`, require('./routers/userRouter').default);
 app.use(`${baseUrl}/roles`, require('./routers/roleRouter').default);
 app.use(`${baseUrl}/user-relationship`, require('./routers/relationshipRouter').default);
 app.use(`${baseUrl}/categories`, require('./routers/categoryRouter').default);
+app.use(`${baseUrl}/banners`, require('./routers/bannerRouter').default);
 
 app.get(`${baseUrl}/healthy`, (req: Request, res: Response) => {
 	res.status(200).json({
 		code: 200,
-        message: req.t('common:success'),
+		message: req.t('common:success'),
 	});
 });
 
 app.use((req: Request, res: Response) => {
 	res.status(404).json({
 		code: 404,
-        message: req.t('common:error'),
+		message: req.t('common:error'),
 	});
 });
 

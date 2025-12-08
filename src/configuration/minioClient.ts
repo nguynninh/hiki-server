@@ -1,6 +1,6 @@
 import * as Minio from "minio";
 
-export const AWS_ENDPOINT = process.env.AWS_ENDPOINT || "http://localhost:9000";
+export const AWS_ENDPOINT = process.env.AWS_ENDPOINT || "http://192.168.0.101:9000";
 const url = new URL(AWS_ENDPOINT);
 
 export const minioClient = new Minio.Client({

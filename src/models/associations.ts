@@ -10,6 +10,7 @@ import ProductModel from './ProductModel';
 import ProductVariantModel from './ProductVariantModel';
 import ProductVariantAttributeModel from './ProductVariantAttributeModel';
 import AvatarDefaultModel from './AvatarDefault';
+import BannerModel from './BannerModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -185,6 +186,7 @@ export {
     ProductVariantModel,
     ProductVariantAttributeModel,
     AvatarDefaultModel,
+    BannerModel,
 };
 
 AvatarDefaultModel.belongsTo(FileMgmtModel, {
