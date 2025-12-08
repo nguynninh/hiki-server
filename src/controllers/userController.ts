@@ -497,6 +497,22 @@ const getListAvatarDefault = asyncHandler(async (req: Request, res: Response) =>
     });
 });
 
+const deleteAvatarDefault = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const avatarDefault: any = await AvatarDefaultModel.findOne({ where: { id } });
+    if (!avatarDefault)
+        throw new NotFoundError(req.t('user:avatar_default_not_found'));
+
+    await deleteFile(avatarDefault.file_id);
+    await avatarDefault.destroy();
+
+    return successResponse(res, {
+        code: 200,
+        message: req.t('user:avatar_default_deleted'),
+    });
+});
+
 export {
     verifyUser,
     createUser,
@@ -510,4 +526,5 @@ export {
     getMe,
     createAvatarDefault,
     getListAvatarDefault,
+    deleteAvatarDefault,
 };

@@ -50,5 +50,7 @@
     "user_deleted_successfully": "ユーザーが正常に削除されました。",
     "user_restored_successfully": "ユーザーが正常に復元されました。",
     "avatar_default_created": "デフォルトのアバターが正常に作成されました。",
-    "email_exists": "メールアドレスは既に存在しています。"
+    "email_exists": "メールアドレスは既に存在しています。",
+    "avatar_default_not_found": "デフォルトのアバターが見つかりません。",
+    "avatar_default_deleted": "デフォルトのアバターが正常に削除されました。"
 }

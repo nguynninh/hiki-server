@@ -32,6 +32,7 @@ const permissionsList = [
 
   "USER_AVATAR_DEFAULT_CREATE",
   "USER_AVATAR_DEFAULT_LIST",
+  "USER_AVATAR_DEFAULT_DELETE",
 ];
 
 export default permissionsList;
