@@ -11,6 +11,7 @@ import {
     ProductVariantModel,
     ProductVariantAttributeModel,
     AvatarDefaultModel,
+    BannerModel,
 } from './associations';
 
 export {
@@ -26,4 +27,5 @@ export {
     ProductVariantModel,
     ProductVariantAttributeModel,
     AvatarDefaultModel,
+    BannerModel,
 };
