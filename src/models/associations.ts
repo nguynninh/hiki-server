@@ -11,6 +11,7 @@ import ProductVariantModel from './ProductVariantModel';
 import ProductVariantAttributeModel from './ProductVariantAttributeModel';
 import AvatarDefaultModel from './AvatarDefault';
 import BannerModel from './BannerModel';
+import AddressModel from './AddressModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -187,6 +188,7 @@ export {
     ProductVariantAttributeModel,
     AvatarDefaultModel,
     BannerModel,
+    AddressModel,
 };
 
 AvatarDefaultModel.belongsTo(FileMgmtModel, {
@@ -197,4 +199,14 @@ AvatarDefaultModel.belongsTo(FileMgmtModel, {
 AvatarDefaultModel.belongsTo(UserModel, {
     foreignKey: 'created_by',
     as: 'creator',
+});
+
+UserModel.hasMany(AddressModel, {
+    foreignKey: 'user_id',
+    as: 'addresses',
+});
+
+AddressModel.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    as: 'user',
 });
