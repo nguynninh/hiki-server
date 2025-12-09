@@ -3,7 +3,7 @@ import CartModel from '../models/CartModel';
 import CartItemModel from '../models/CartItemModel';
 import ProductModel from '../models/ProductModel';
 import ProductVariantModel from '../models/ProductVariantModel';
-import { AttributeValueModel, AttributeModel } from '../models';
+import { AttributeValueModel, AttributeModel, UserModel, StoreModel } from '../models';
 import { getFileUrl } from '../services/fileService';
 
 const getCart = async (req: Request, res: Response) => {
@@ -25,12 +25,23 @@ const getCart = async (req: Request, res: Response) => {
                         {
                             model: ProductModel,
                             as: 'product',
-                            include: [{
-                                model: ProductVariantModel,
-                                as: 'variants',
-                                limit: 1,
-                                attributes: ['image']
-                            }]
+                            include: [
+                                {
+                                    model: ProductVariantModel,
+                                    as: 'variants',
+                                    limit: 1,
+                                    attributes: ['image']
+                                },
+                                {
+                                    model: UserModel,
+                                    as: 'seller',
+                                    include: [{
+                                        model: StoreModel,
+                                        as: 'store',
+                                        attributes: ['id', 'store_name', 'logo']
+                                    }]
+                                }
+                            ]
                         },
                         {
                             model: ProductVariantModel,

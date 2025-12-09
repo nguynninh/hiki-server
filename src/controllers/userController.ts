@@ -1,4 +1,4 @@
-import { UserModel, RoleModel, PermissionModel, AvatarDefaultModel, FileMgmtModel } from "../models";
+import { UserModel, RoleModel, PermissionModel, AvatarDefaultModel, FileMgmtModel, StoreModel } from "../models";
 import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -161,6 +161,11 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
 
     const user: any = await UserModel.findOne({
         where: { id: userId },
+        include: [{
+            model: StoreModel,
+            as: 'store',
+            attributes: ['store_name', 'status']
+        }]
     });
 
     if (!user)
@@ -249,19 +254,28 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
     const limitNumber = parseInt(limit as string, 10) || 10;
     const offset = (pageNumber - 1) * limitNumber;
 
+    const include: any[] = [{
+        model: RoleModel,
+        as: 'roles',
+        attributes: ['id', 'name'],
+        through: { attributes: [] },
+        where: roleWhereClause,
+    }];
+
+    if (seller_request_status) {
+        include.push({
+            model: StoreModel,
+            as: 'store',
+        });
+    }
+
     const { rows: users, count: total } = await UserModel.findAndCountAll({
         where: whereClause,
         limit: limitNumber,
         offset,
         paranoid,
         order: [['created_at', 'DESC']],
-        include: [{
-            model: RoleModel,
-            as: 'roles',
-            attributes: ['id', 'name'],
-            through: { attributes: [] },
-            where: roleWhereClause,
-        }],
+        include,
     });
 
     return successResponse(res, {
@@ -572,9 +586,10 @@ const approveSeller = asyncHandler(async (req: Request, res: Response) => {
     const sellerRole = await RoleModel.findOne({ where: { name: roles.SELLER } });
     if (sellerRole) {
         await (user as any).addRole(sellerRole);
-        // Ensure USER role is kept or logic depending on requirements. 
-        // Typically sellers are also users.
     }
+
+    // Activate Store
+    await StoreModel.update({ status: 'active' }, { where: { user_id: id } });
 
     return successResponse(res, {
         message: req.t('user:seller_approved'),
@@ -589,6 +604,9 @@ const rejectSeller = asyncHandler(async (req: Request, res: Response) => {
 
     user.seller_request_status = 'rejected';
     await user.save();
+
+    // Delete Store to allow re-registration
+    await StoreModel.destroy({ where: { user_id: id } });
 
     return successResponse(res, {
         message: req.t('user:seller_rejected'),

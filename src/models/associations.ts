@@ -14,6 +14,7 @@ import BannerModel from './BannerModel';
 import AddressModel from './AddressModel';
 import CartModel from './CartModel';
 import CartItemModel from './CartItemModel';
+import StoreModel from './StoreModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -176,6 +177,17 @@ ProductVariantModel.belongsToMany(AttributeValueModel, {
     as: 'values',
 });
 
+// Store Associations
+UserModel.hasOne(StoreModel, {
+    foreignKey: 'user_id',
+    as: 'store',
+});
+
+StoreModel.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    as: 'owner',
+});
+
 export {
     UserModel,
     RoleModel,
@@ -193,6 +205,7 @@ export {
     AddressModel,
     CartModel,
     CartItemModel,
+    StoreModel,
 };
 
 AvatarDefaultModel.belongsTo(FileMgmtModel, {
