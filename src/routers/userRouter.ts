@@ -14,6 +14,9 @@ import {
     createAvatarDefault,
     getListAvatarDefault,
     deleteAvatarDefault,
+    requestSeller,
+    approveSeller,
+    rejectSeller,
 } from '../controllers/userController';
 import {
     validateAvatar,
@@ -125,6 +128,27 @@ router.post(
     upload.single('avatar'),
     validateAvatar,
     uploadAvatar,
+);
+
+// Seller routes
+router.post(
+    '/request-seller',
+    authenticate,
+    requestSeller,
+);
+
+router.post(
+    '/approve-seller/:id',
+    authenticate,
+    authorize('SUPER_ADMIN'), // Using role directly as per bannerRouter pattern
+    approveSeller,
+);
+
+router.post(
+    '/reject-seller/:id',
+    authenticate,
+    authorize('SUPER_ADMIN'),
+    rejectSeller,
 );
 
 export default router;
