@@ -12,6 +12,8 @@ import ProductVariantAttributeModel from './ProductVariantAttributeModel';
 import AvatarDefaultModel from './AvatarDefault';
 import BannerModel from './BannerModel';
 import AddressModel from './AddressModel';
+import CartModel from './CartModel';
+import CartItemModel from './CartItemModel';
 
 UserModel.belongsToMany(RoleModel, {
     through: 'user_roles',
@@ -189,6 +191,8 @@ export {
     AvatarDefaultModel,
     BannerModel,
     AddressModel,
+    CartModel,
+    CartItemModel,
 };
 
 AvatarDefaultModel.belongsTo(FileMgmtModel, {
@@ -209,4 +213,35 @@ UserModel.hasMany(AddressModel, {
 AddressModel.belongsTo(UserModel, {
     foreignKey: 'user_id',
     as: 'user',
+});
+
+// Cart Associations
+UserModel.hasOne(CartModel, {
+    foreignKey: 'user_id',
+    as: 'cart',
+});
+
+CartModel.belongsTo(UserModel, {
+    foreignKey: 'user_id',
+    as: 'user',
+});
+
+CartModel.hasMany(CartItemModel, {
+    foreignKey: 'cart_id',
+    as: 'items',
+});
+
+CartItemModel.belongsTo(CartModel, {
+    foreignKey: 'cart_id',
+    as: 'cart',
+});
+
+CartItemModel.belongsTo(ProductModel, {
+    foreignKey: 'product_id',
+    as: 'product',
+});
+
+CartItemModel.belongsTo(ProductVariantModel, {
+    foreignKey: 'variant_id',
+    as: 'variant',
 });

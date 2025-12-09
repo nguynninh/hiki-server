@@ -14,6 +14,10 @@ import {
     BannerModel,
 } from './associations';
 
+export * from './AddressModel';
+export * from './CartModel';
+export * from './CartItemModel';
+
 export {
     UserModel,
     RoleModel,
