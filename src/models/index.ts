@@ -12,6 +12,7 @@ import {
     ProductVariantAttributeModel,
     AvatarDefaultModel,
     BannerModel,
+    StoreModel,
 } from './associations';
 
 export * from './AddressModel';
@@ -32,4 +33,5 @@ export {
     ProductVariantAttributeModel,
     AvatarDefaultModel,
     BannerModel,
+    StoreModel,
 };

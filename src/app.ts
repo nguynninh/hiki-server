@@ -20,6 +20,7 @@ app.use(`${baseUrl}/products`, require('./routers/productRouter').default);
 app.use(`${baseUrl}/banners`, require('./routers/bannerRouter').default);
 app.use(`${baseUrl}/address`, require('./routers/addressRouter').default);
 app.use(`${baseUrl}/carts`, require('./routers/cartRouter').default);
+app.use(`${baseUrl}/stores`, require('./routers/storeRouter').default);
 
 app.get(`${baseUrl}/healthy`, (req: Request, res: Response) => {
 	res.status(200).json({
