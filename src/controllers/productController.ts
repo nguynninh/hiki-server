@@ -23,7 +23,7 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
         description,
         brand,
         category_id,
-        variants // Array of { price, stock, image, attributes: [{ attribute_id, attribute_value_id }] }
+        variants
     } = req.body;
 
     if (!name) throw new ValidationError(req.t('product:name_required'));
@@ -107,10 +107,9 @@ export const getListProducts = asyncHandler(async (req: Request, res: Response) 
                 ]
             }
         ],
-        distinct: true, // Important for correct count with includes
+        distinct: true,
     });
 
-    // Process images for variants
     const products = await Promise.all(rows.map(async (product: any) => {
         const productJSON = product.toJSON();
         if (productJSON.variants) {
@@ -119,7 +118,6 @@ export const getListProducts = asyncHandler(async (req: Request, res: Response) 
                 image_url: v.image ? await getFileUrl(v.image) : null
             })));
 
-            // Naive logic: set product image to first variant's image if exists
             if (productJSON.variants.length > 0 && productJSON.variants[0].image_url) {
                 productJSON.image_url = productJSON.variants[0].image_url;
             }
