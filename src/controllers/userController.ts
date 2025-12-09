@@ -215,6 +215,7 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
         is_deleted,
         q,
         roles,
+        seller_request_status,
     } = req.query;
 
     const whereClause: any = {};
@@ -225,6 +226,10 @@ const getListUsers = asyncHandler(async (req: Request, res: Response) => {
     } else if (is_deleted === 'true') {
         paranoid = false;
         whereClause.deleted_at = { [Op.not]: null };
+    }
+
+    if (seller_request_status) {
+        whereClause.seller_request_status = seller_request_status;
     }
 
     if (q) {
@@ -527,4 +532,65 @@ export {
     createAvatarDefault,
     getListAvatarDefault,
     deleteAvatarDefault,
+    requestSeller,
+    approveSeller,
+    rejectSeller
 };
+
+const requestSeller = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const user: any = await UserModel.findByPk(userId);
+
+    if (!user) throw new NotFoundError(req.t('user:user_not_found'));
+
+    if (user.seller_request_status === 'pending') {
+        throw new ValidationError(req.t('user:seller_request_already_pending'));
+    }
+
+    if (user.seller_request_status === 'approved') {
+        throw new ValidationError(req.t('user:already_seller'));
+    }
+
+    user.seller_request_status = 'pending';
+    await user.save();
+
+    return successResponse(res, {
+        message: req.t('user:seller_request_submitted'),
+    });
+});
+
+const approveSeller = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const user: any = await UserModel.findByPk(id);
+
+    if (!user) throw new NotFoundError(req.t('user:user_not_found'));
+
+    user.seller_request_status = 'approved';
+    await user.save();
+
+    // Assign SELLER role
+    const sellerRole = await RoleModel.findOne({ where: { name: roles.SELLER } });
+    if (sellerRole) {
+        await (user as any).addRole(sellerRole);
+        // Ensure USER role is kept or logic depending on requirements. 
+        // Typically sellers are also users.
+    }
+
+    return successResponse(res, {
+        message: req.t('user:seller_approved'),
+    });
+});
+
+const rejectSeller = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const user: any = await UserModel.findByPk(id);
+
+    if (!user) throw new NotFoundError(req.t('user:user_not_found'));
+
+    user.seller_request_status = 'rejected';
+    await user.save();
+
+    return successResponse(res, {
+        message: req.t('user:seller_rejected'),
+    });
+});

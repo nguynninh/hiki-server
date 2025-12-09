@@ -31,6 +31,10 @@ const UserModel = sequelize.define('users', {
         type: DataTypes.UUID,
         allowNull: true,
     },
+    seller_request_status: {
+        type: DataTypes.ENUM('none', 'pending', 'approved', 'rejected'),
+        defaultValue: 'none',
+    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

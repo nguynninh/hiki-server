@@ -93,7 +93,7 @@ export const getListCategories = asyncHandler(async (req: Request, res: Response
                 ...category.toJSON(),
                 image: await getFileUrl((category as any).image),
             }))),
-            pagination: Pagination(
+            paginations: Pagination(
                 Number(page),
                 Number(limit),
                 count
